@@ -1,0 +1,26 @@
+<template>
+	<div class="images-list">
+		<div class="header-block">
+			<h2>The most popular images by likes</h2>
+		</div>
+		<images-list :images="store.images"></images-list>
+		<load-spinner v-if="loaderState.isActive"></load-spinner>
+	</div>
+</template>
+
+<script async setup>
+import ImagesList from "../components/blocks/ImagesList.vue";
+import {useImageStore} from "../../stores/image.js";
+import LoadSpinner from "../components/elements/spinners/LoadSpinner.vue";
+import {useLoaderStore} from "../../stores/loader";
+
+const loaderState = useLoaderStore();
+const store = useImageStore();
+store.setSearchedImages();
+
+
+</script>
+
+<style scoped>
+
+</style>

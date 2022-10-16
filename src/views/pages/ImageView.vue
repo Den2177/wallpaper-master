@@ -1,0 +1,207 @@
+<template>
+	<div>
+		<div class="inner"
+				 :style="{background: `linear-gradient(rgba(13, 12, 15, 0.4), rgba(13, 12, 15, 0.6)), url('${image.url}') center center / cover no-repeat fixed`}">
+			<h2 class="center upper">{{ image.name }}</h2>
+		</div>
+		<div class="main-content">
+			<div class="container">
+				<div class="two-one">
+					<div class="left-section">
+						<div class="section-block">
+							<h3>Author</h3>
+							<user-info
+									v-if="image.author"
+									@click="showAuthorPage"
+									:user="image.author"
+							></user-info>
+						</div>
+						<div class="section-block">
+							<h3>Image property</h3>
+							<div class="image-info">
+								<div class="custom-table card">
+									<div class="row">
+										<h4 class="key grey">
+											Width
+										</h4>
+										<div class="value">
+											{{ image.width }}px
+										</div>
+									</div>
+									<div class="row">
+										<h4 class="key grey">
+											Height
+										</h4>
+										<div class="value">
+											{{ image.height }}px
+										</div>
+									</div>
+									<div class="row">
+										<h4 class="key grey">
+											Mimes
+										</h4>
+										<div class="value">
+											{{ image.mime }}
+										</div>
+									</div>
+									<div class="row">
+										<h4 class="key grey">
+											Image Size
+										</h4>
+										<div class="value">
+											{{ convertBytesToKbytes(image.filesize) }} KBytes
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="section-block">
+							<h3>Tags</h3>
+							<div class="tag-list">
+								<div class="tag" style="background: #6349d9;" v-for="tag in image.tags" :key="tag.id">
+									{{tag.name}}
+								</div>
+							</div>
+						</div>
+
+						<div class="section-block">
+							<div class="mt20 flex-row">
+								<main-button
+										:is-disable="!authStore.isAuthed"
+										@click="downloadImage(image)"
+								>Download
+								</main-button>
+
+								<like-button
+										v-if="image"
+										:is-disable="!authStore.isAuthed"
+										:class="{active: image.isLiked}"
+										:counter="image.likes"
+										@click="toggleLike(image)"
+								></like-button>
+							</div>
+						</div>
+					</div>
+
+					<div class="image-big">
+						<img :src="image.url" alt="image1">
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</template>
+
+<script async setup>
+import MainButton from "../components/elements/buttons/MainButton.vue";
+import LikeButton from "../components/elements/buttons/LikeButton.vue";
+import UserInfo from "../components/blocks/UserInfo.vue";
+import {useRoute, useRouter} from "vue-router";
+import {useImageStore} from "../../stores/image";
+import {useAuthStore} from "../../stores/auth";
+
+const route = useRoute();
+const router = useRouter();
+
+const authStore = useAuthStore();
+const imageStore = useImageStore();
+const image = imageStore.image;
+
+await imageStore.setOneImage(route.params.id);
+
+function downloadImage(image) {
+	imageStore.downloadImage(image);
+}
+
+function convertBytesToKbytes(value) {
+	return Math.round(value / 1000);
+}
+
+function toggleLike(image) {
+	imageStore.toggleLike(image);
+}
+
+function showAuthorPage() {
+	router.push(`/users/${image.author.id}`);
+}
+
+</script>
+
+<style scoped>
+.main-content {
+	padding: 75px 0;
+}
+
+.image-big img {
+	object-fit: contain;
+}
+
+.inner {
+	height: 25vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.two-one {
+	display: grid;
+	grid-template-columns: 1fr 2fr;
+	gap: 20px;
+}
+
+.image-big {
+	width: 100%;
+}
+
+.image-big > img {
+	border-radius: 20px;
+}
+
+.custom-table {
+	display: flex;
+	padding: 20px;
+	flex-direction: column;
+}
+
+.row {
+	padding: 10px 0px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.left-section {
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+}
+
+.section-block > h3 {
+	margin-bottom: 10px;
+}
+
+.tag-list {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 10px;
+	justify-content: center;
+}
+
+.tag {
+	background-color: #6f4fff;
+	color: #fff;
+	border-radius: 4px;
+	cursor: pointer;
+	padding: 5px 10px;
+}
+
+@media (max-width: 1050px) {
+	.two-one {
+		grid-template-columns: 1fr;
+	}
+}
+
+</style>
