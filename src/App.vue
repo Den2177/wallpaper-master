@@ -1,13 +1,16 @@
 <script setup>
 import {RouterView, useRoute, useRouter} from 'vue-router';
 import {computed} from "vue";
-import NotifiactionBlock from "./views/./components/blocks/NotifiactionBlock.vue";
+import NotificationBlock from "./views/./components/blocks/NotifiactionBlock.vue";
 import LoadSpinner from "./views/components/elements/spinners/LoadSpinner.vue";
-import {useLoaderStore} from "./stores/loader";
-
+import {useLoaderStore} from "./state/loader";
+import {useAuthStore} from "./state/auth";
+const authStore = useAuthStore();
 const router = useRouter();
 const route = useRoute();
 const loaderState = useLoaderStore();
+
+authStore.setAuthedUser();
 
 const layout = computed(() => {
 	const {meta} = useRoute();
@@ -22,7 +25,7 @@ const layout = computed(() => {
 			<RouterView v-slot="{ Component }">
 				<template v-if="Component">
 					<Transition name="page" mode="out-in">
-						<Suspense>
+						<Suspense timeout="0">
 							<component :is="Component"></component>
 							<template #fallback>
 								<load-spinner></load-spinner>
@@ -33,7 +36,7 @@ const layout = computed(() => {
 			</RouterView>
 		</component>
 
-		<NotifiactionBlock></NotifiactionBlock>
+		<notification-block></notification-block>
 	</div>
 
 </template>
@@ -89,13 +92,6 @@ body {
 	gap: 10px;
 }
 
-.avatar {
-	width: 50px;
-	height: 50px;
-	border-radius: 50%;
-	background-color: #ff514f;
-	cursor: pointer;
-}
 
 .upper {
 	text-transform: uppercase;

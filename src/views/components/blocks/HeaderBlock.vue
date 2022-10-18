@@ -2,14 +2,14 @@
 	<header class="header">
 		<div class="container">
 
-			<div class="burger">
-				<span></span>
-			</div>
+			<header-burger :active="mobileMenuVisible" @toggle="mobileMenuVisible = !mobileMenuVisible"></header-burger>
 
-			<user-info @click="$router.push('/profile')" class="user-info-header" :user="authStore.user"></user-info>
+			<user-info @click="$router.push('/profile')" class="user-info-header" :user="authStore.userInfo"></user-info>
 
 			<search-input v-model="searchValue"></search-input>
 		</div>
+
+		<mobile-navigation :mobile-menu-visible="mobileMenuVisible" @close="mobileMenuVisible = !mobileMenuVisible"></mobile-navigation>
 	</header>
 </template>
 
@@ -18,15 +18,18 @@ import UserInfo from "./UserInfo.vue";
 import SearchInput from "../elements/inputs/SearchInput.vue";
 import {ref, watch, watchEffect} from "vue";
 import {useRouter, useRoute} from "vue-router";
-import {useImageStore} from "../../../stores/image";
-import {useAuthStore} from "../../../stores/auth";
+import {useImageStore} from "../../../state/image";
+import {useAuthStore} from "../../../state/auth";
 import LoadSpinner from "../elements/spinners/LoadSpinner.vue";
+import MobileNavigation from "./MobileNavigation.vue";
+import HeaderBurger from "../elements/burgers/HeaderBurger.vue";
 
 let searchValue = ref('');
 const router = useRouter();
 const route = useRoute;
 const imageStore = useImageStore();
 const authStore = useAuthStore();
+let mobileMenuVisible = ref(false);
 
 watch(searchValue,  (newValue) => {
 	imageStore.setSearchedImages(newValue);
@@ -44,10 +47,6 @@ watch(searchValue,  (newValue) => {
 </script>
 
 <style scoped>
-
-.burger {
-	display: none;
-}
 
 .header {
 	background-color: rgba(26, 22, 31, 0.7);
@@ -69,45 +68,11 @@ header .input {
 	position: relative;
 }
 
-
-
 @media(max-width: 950px) {
-	.burger {
-		display: block;
-		position: relative;
-		width: 25px;
-		height: 22px;
+	.user-info-header {
+		display: none;
 	}
-	.burger::before, .burger::after {
-		content: "";
-		position: absolute;
-	}
-	.burger span, .burger::before, .burger::after {
-		position: absolute;
-		background-color: #fff;
-		height: 2px;
-		width: 100%;
-	}
-	.burger::before {
-		top: 0;
-		left: 0;
-	}
-	.burger span {
-		top: 50%;
-		left: 0;
-		transform: translate(0%, -50%);
-	}
-	.burger::after {
-		bottom: 0;
-		left: 0;
-	}
-
-	@media(max-width: 950px) {
-		.user-info-header {
-			display: none;
-		}
-	}
-
 }
+
 
 </style>

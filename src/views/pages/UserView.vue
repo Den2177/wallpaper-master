@@ -54,7 +54,7 @@ import ImagesList from "../components/blocks/ImagesList.vue";
 import ModalWindow from "../components/templates/ModalWindow.vue";
 import {ref} from "vue";
 import UserInfo from "../components/blocks/UserInfo.vue";
-import {useUserStore} from "../../stores/user";
+import {useUserStore} from "../../state/user";
 import {useRoute} from "vue-router";
 
 const userStore = useUserStore();

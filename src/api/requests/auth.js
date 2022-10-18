@@ -7,3 +7,7 @@ export const login = (data) => {
 export const register = (data) => {
     return axios.post('/register', data);
 }
+
+export const requestAuthedUser = () => {
+    return axios.post('/auth', {});
+}

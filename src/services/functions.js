@@ -12,17 +12,20 @@ export function formatErrorMessage(message) {
     return finalMessage;
 }
 
-export function convertObjToFormData(data) {
+export function convertObjToFormData(data, method = 'post') {
     const formdata = new FormData();
+
+    if (method !== 'post') {
+        formdata.append('_method', method);
+    }
 
     const isArray = (value) => Array.isArray(value);
     const isObject = (value) => typeof value === 'object';
     const isFile = (value) => value instanceof File;
 
     const isIterable = (value) => isArray(value) || (isObject(value) && !isFile(value));
+
     for (let field in data) {
-        console.log(field);
-        console.log(data[field]);
         if (isIterable(data[field])) {
             const iterable = data[field];
 
@@ -51,12 +54,18 @@ export function throttle(func, ms) {
         savedArgs,
         savedThis;
 
-    function wrapper() {
+    const dataController = {};
+
+    async function wrapper() {
 
         if (isThrottled) {
             savedArgs = arguments;
             savedThis = this;
-            return null;
+
+            return new Promise((res, rej) => {
+                dataController.resolve = res;
+                dataController.reject = rej;
+            });
         }
 
         isThrottled = true;
@@ -65,12 +74,10 @@ export function throttle(func, ms) {
             isThrottled = false;
 
             if (savedArgs) {
-                wrapper.apply(savedThis, savedArgs);
+                dataController.resolve(wrapper.apply(savedThis, savedArgs));
                 savedArgs = savedThis = null;
             }
         }, ms);
-
-        console.log('wrapper active');
 
         return func.apply(this, arguments);
     }
@@ -78,3 +85,10 @@ export function throttle(func, ms) {
     return wrapper;
 }
 
+export const loadPage = (pageName) => {
+    return () => import(`../views/pages/${pageName}.vue`);
+}
+
+export const getExtensionFromMimes = (mime) => {
+    return mime.split('/')[1];
+}

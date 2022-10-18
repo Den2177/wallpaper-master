@@ -1,5 +1,6 @@
 <template>
 	<div>
+		<header-block></header-block>
 		<div class="inner"
 				 :style="{background: `linear-gradient(rgba(13, 12, 15, 0.4), rgba(13, 12, 15, 0.6)), url('${image.url}') center center / cover no-repeat fixed`}">
 			<h2 class="center upper">{{ image.name }}</h2>
@@ -58,7 +59,7 @@
 						<div class="section-block">
 							<h3>Tags</h3>
 							<div class="tag-list">
-								<div class="tag" style="background: #6349d9;" v-for="tag in image.tags" :key="tag.id">
+								<div class="tag" style="background: #6349d9;" v-for="tag in image.tags" :key="tag.id" @click="searchWithTag(tag)">
 									{{tag.name}}
 								</div>
 							</div>
@@ -98,8 +99,9 @@ import MainButton from "../components/elements/buttons/MainButton.vue";
 import LikeButton from "../components/elements/buttons/LikeButton.vue";
 import UserInfo from "../components/blocks/UserInfo.vue";
 import {useRoute, useRouter} from "vue-router";
-import {useImageStore} from "../../stores/image";
-import {useAuthStore} from "../../stores/auth";
+import {useImageStore} from "../../state/image";
+import {useAuthStore} from "../../state/auth";
+import HeaderBlock from "../components/blocks/HeaderBlock.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -126,6 +128,18 @@ function showAuthorPage() {
 	router.push(`/users/${image.author.id}`);
 }
 
+async function searchWithTag(tag) {
+	const imagesStore = useImageStore();
+
+	await router.push(
+			{
+				name: 'top',
+			}
+	);
+
+	imagesStore.setSearchedImages(tag.name);
+}
+
 </script>
 
 <style scoped>
@@ -133,12 +147,21 @@ function showAuthorPage() {
 	padding: 75px 0;
 }
 
-.image-big img {
+.image-big {
+	width: fit-content;
+	height: fit-content;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: auto auto;
+}
+
+.image-big img {;
 	object-fit: contain;
 }
 
 .inner {
-	height: 25vh;
+	height: 35vh;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -149,14 +172,6 @@ function showAuthorPage() {
 	display: grid;
 	grid-template-columns: 1fr 2fr;
 	gap: 20px;
-}
-
-.image-big {
-	width: 100%;
-}
-
-.image-big > img {
-	border-radius: 20px;
 }
 
 .custom-table {

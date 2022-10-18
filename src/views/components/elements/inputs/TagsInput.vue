@@ -5,10 +5,10 @@
 		</div>
 		<input
 				ref="tagInput"
-				placeholder="tag1 tag2 tag3..."
+				placeholder="tag#1 tag#2 tag#3..."
 				class="input"
 				v-model="inputValue"
-				@input="update($event.target.value)" @keydown.enter="pushTag($event.target.value)"
+				@input="update($event.target.value)" @keydown.enter="updateOnEnter($event.target.value)"
 				@keydown.delete="deleteTag($event.target.value)">
 	</div>
 
@@ -24,9 +24,11 @@ let tags = ref([]);
 let inputValue = ref('');
 
 function update(value) {
-	if (value.trim() && value.at(-1) === ' ') {
-		pushTag(value);
-	}
+	if (value.trim() && value.at(-1) === ' ') pushTag(value);
+}
+
+function updateOnEnter(value) {
+	if (value.trim()) pushTag(value);
 }
 
 function deleteTag(value) {
@@ -39,6 +41,7 @@ function deleteTag(value) {
 }
 
 function pushTag(value) {
+	console.log('worked!');
 	tags.value.push(
 			{
 				name: value.trim(),

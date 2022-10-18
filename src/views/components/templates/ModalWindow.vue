@@ -34,7 +34,7 @@ onUnmounted(() => window.removeEventListener('keydown', closeEscape));
 
 function open() {
 	isOpen.value = true;
-	console.log(isOpen.value);
+
 	return new Promise((res, rej) => {
 		popupController.resolve = res;
 		popupController.reject = rej;
@@ -47,6 +47,7 @@ function confirm() {
 }
 
 function close() {
+	popupController.resolve(false);
 	isOpen.value = false;
 }
 
@@ -76,13 +77,14 @@ defineExpose({
 }
 
 .backdrop {
-	position: absolute;
-	top: 20%;
-	left: 50%;
-	transform: translate(-50%, 0);
-	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
 	width: 100%;
+	height: 100vh;
+	padding-top: 100px;
 	z-index: 1001;
+
 	background-color: rgba(13, 12, 15, 0.4);
 }
 

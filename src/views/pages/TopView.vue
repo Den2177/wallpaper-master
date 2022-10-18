@@ -10,9 +10,9 @@
 
 <script async setup>
 import ImagesList from "../components/blocks/ImagesList.vue";
-import {useImageStore} from "../../stores/image.js";
+import {useImageStore} from "../../state/image.js";
 import LoadSpinner from "../components/elements/spinners/LoadSpinner.vue";
-import {useLoaderStore} from "../../stores/loader";
+import {useLoaderStore} from "../../state/loader";
 
 const loaderState = useLoaderStore();
 const store = useImageStore();

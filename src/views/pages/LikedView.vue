@@ -9,7 +9,7 @@
 
 <script async setup>
 import ImagesList from "../components/blocks/ImagesList.vue";
-import {useImageStore} from "../../stores/image";
+import {useImageStore} from "../../state/image";
 
 const imageStore = useImageStore();
 await imageStore.setLikedImages();

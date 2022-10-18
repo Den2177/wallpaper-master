@@ -5,13 +5,13 @@
 		</div>
 		<modal-window ref="popup">
 			<form-template>
-				<input-wrapper hint="Изображение">
+				<input-wrapper hint="Images">
 					<file-input @change-file="setImage" v-model="imageFields.image"></file-input>
 				</input-wrapper>
-				<input-wrapper hint="Название">
+				<input-wrapper hint="Name">
 					<main-input v-model="imageFields.name"></main-input>
 				</input-wrapper>
-				<input-wrapper hint="Теги">
+				<input-wrapper hint="Tags">
 					<tags-input @update="updateTags"></tags-input>
 				</input-wrapper>
 			</form-template>
@@ -28,7 +28,7 @@ import InputWrapper from "./InputWrapper.vue";
 import FileInput from "../elements/inputs/FileInput.vue";
 import TagsInput from "../elements/inputs/TagsInput.vue";
 import {reactive, ref} from "vue";
-import {useImageStore} from "../../../stores/image.js";
+import {useImageStore} from "../../../state/image.js";
 
 const popup = ref(null);
 const store = useImageStore();
@@ -48,11 +48,6 @@ function clearFields() {
 
 function updateTags(tags) {
 	imageFields.tags = tags;
-/*
-	Object.assign(imageFields.tags, tags);
-*/
-	console.log(imageFields.tags);
-
 }
 
 function setImage(file) {

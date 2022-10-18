@@ -1,19 +1,15 @@
-export const getUserFromStorage= () => {
-    return JSON.parse(localStorage.getItem('user')) || {};
-}
-
-export const pushUserToStorage = (user) => {
-    localStorage.setItem('user', JSON.stringify(user));
+export const pushTokenToStorage = (token) => {
+    localStorage.setItem('token', token);
 
     return true;
 }
 
 export const clearUserFromStorage= () => {
-    localStorage.removeItem('user');
+    localStorage.removeItem('token');
 
     return true;
 }
 
-export const getTokenFromStorage= () => {
-    return JSON.parse(localStorage.getItem('user'))?.token ?? null; 
+export const getTokenFromStorage = () => {
+    return localStorage.getItem('token');
 }

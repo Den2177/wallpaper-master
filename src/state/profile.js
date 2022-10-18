@@ -1,4 +1,4 @@
-import {requestMyStatistic} from "../api/requests/profile";
+import {requestMyStatistic, requestProfileUpdate} from "../api/requests/profile";
 import {saveStatisticToStorage} from "../storage/statistic";
 import {useAuthStore} from "./auth";
 import {defineStore} from "pinia/dist/pinia";
@@ -14,7 +14,13 @@ export const useProfileStore = defineStore('profile', () => {
         });
     }
 
+    async function updateProfile(data) {
+        const userInfo = await requestProfileUpdate(data);
+        await authStore.setAuthedUser();
+    }
+
     return {
+        updateProfile,
         updateStatistic
     }
 });

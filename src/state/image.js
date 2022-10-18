@@ -9,7 +9,8 @@ import {
     requestToggleLike,
     storeImage
 } from "../api/requests/image";
-import {getExtensionFromMimes} from "../services/file_service";
+
+import {getExtensionFromMimes} from "../services/functions";
 import {useProfileStore} from "./profile.js";
 import {useLoaderStore} from "./loader";
 
@@ -34,18 +35,13 @@ export const useImageStore = defineStore('image', () => {
         });
     }
 
-    function setSearchedImages(imageName = '') {
+    async function setSearchedImages(imageName = '') {
         images.value = [];
+
         loaderState.show();
-
-        const result = requestImagesByName(imageName); // throttled function
-
-        if (result instanceof Promise) {
-            result.then(response => {
-                loaderState.hidden();
-                images.value = response.data.data;
-            });
-        }
+        const response = await requestImagesByName(imageName);
+        images.value = response.data.data;
+        loaderState.hidden();
     }
 
     function setRecommendedImages() {
@@ -62,6 +58,7 @@ export const useImageStore = defineStore('image', () => {
 
     function setLikedImages() {
         images.value = [];
+
         return requestLikedImages().then(response => images.value = response.data.data);
     }
 

@@ -1,6 +1,6 @@
 import axios from "../config/axios-config.js";
 import api from "../config/api.js";
-import {convertObjToFormData, mountParametersToQueryString, throttle} from "../../services/api_service";
+import {convertObjToFormData, mountParametersToQueryString, throttle} from "../../services/functions";
 
 const throttledRequestImagesByName = throttle((imageName) => {
     return axios.get(mountParametersToQueryString('/top', {

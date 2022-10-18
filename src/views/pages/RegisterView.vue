@@ -28,10 +28,10 @@ import MainButton from "../components/elements/buttons/MainButton.vue";
 import InputWrapper from "../components/blocks/InputWrapper.vue";
 import MainInput from "../components/elements/inputs/MainInput.vue";
 import FormTemplate from '../components/templates/FormTemplate.vue';
-import {useAuthStore} from "../../stores/auth.js";
+import {useAuthStore} from "../../state/auth.js";
 import {useAuthFields} from "../../composables/auth";
 import {useRouter} from "vue-router";
-import {formatErrorMessage} from "../../services/api_service";
+import {formatErrorMessage} from "../../services/functions.js";
 import {useNotification} from "../../composables/notification";
 const {userFields, clearFields} = useAuthFields();
 

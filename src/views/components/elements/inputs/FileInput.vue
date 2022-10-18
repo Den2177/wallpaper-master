@@ -5,7 +5,6 @@
 <script setup>
 const props = defineProps(['modelValue']);
 const emit = defineEmits(['change-file']);
-
 </script>
 
 <style scoped>

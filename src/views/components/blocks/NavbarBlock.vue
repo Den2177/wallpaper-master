@@ -16,11 +16,13 @@
 </template>
 
 <script setup>
-import {useAuthStore} from "../../../stores/auth";
+import {useAuthStore} from "../../../state/auth";
 import {useRouter} from "vue-router";
+import {ref} from "vue";
 
 const authStore = useAuthStore();
 const router = useRouter();
+let mobileMenuVisible = ref(false);
 
 function logout() {
 	authStore.logout()
@@ -59,25 +61,8 @@ function logout() {
 }
 
 .menu-title {
-	color: #9f9f9f;
 	margin-bottom: 20px;
-}
-
-.link.active::after {
-	content: "";
-	height: 100%;
-	width: 3px;
-	background-color: #ff514f;
-	position: absolute;
-	right: 0;
-	top: 0;
-	border-radius: 4px;
-}
-
-.menu-sections {
-	display: flex;
-	flex-direction: column;
-	gap: 20px;
+	color: #6b6a6f;
 }
 
 @media (max-width: 950px) {
@@ -96,6 +81,29 @@ function logout() {
 	.images-list {
 		grid-template-columns: 1fr 1fr;
 	}
+
+	.menu-title {
+		color: #9f9f9f;
+		margin-bottom: 20px;
+	}
+
+	.link.active::after {
+		content: "";
+		height: 100%;
+		width: 3px;
+		background-color: #ff514f;
+		position: absolute;
+		right: 0;
+		top: 0;
+		border-radius: 4px;
+	}
+
+	.menu-sections {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
 
 }
 
