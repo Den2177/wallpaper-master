@@ -2,21 +2,21 @@
 	<header class="header">
 		<div class="container">
 
-			<header-burger :active="mobileMenuVisible" @toggle="mobileMenuVisible = !mobileMenuVisible"></header-burger>
+			<header-burger @click.stop :active="mobileMenuVisible" @toggle="mobileMenuVisible = !mobileMenuVisible"></header-burger>
 
 			<user-info @click="$router.push('/profile')" class="user-info-header" :user="authStore.userInfo"></user-info>
 
 			<search-input v-model="searchValue"></search-input>
 		</div>
 
-		<mobile-navigation :mobile-menu-visible="mobileMenuVisible" @close="mobileMenuVisible = !mobileMenuVisible"></mobile-navigation>
+		<mobile-navigation @click.stop :mobile-menu-visible="mobileMenuVisible" @close="mobileMenuVisible = !mobileMenuVisible"></mobile-navigation>
 	</header>
 </template>
 
 <script setup>
 import UserInfo from "./UserInfo.vue";
 import SearchInput from "../elements/inputs/SearchInput.vue";
-import {ref, watch, watchEffect} from "vue";
+import {onMounted, onUnmounted, ref, watch, watchEffect} from "vue";
 import {useRouter, useRoute} from "vue-router";
 import {useImageStore} from "../../../state/image";
 import {useAuthStore} from "../../../state/auth";
@@ -29,7 +29,9 @@ const router = useRouter();
 const route = useRoute;
 const imageStore = useImageStore();
 const authStore = useAuthStore();
+
 let mobileMenuVisible = ref(false);
+let disableMobileMenu = () => mobileMenuVisible.value = false;
 
 watch(searchValue,  (newValue) => {
 	imageStore.setSearchedImages(newValue);
@@ -41,8 +43,10 @@ watch(searchValue,  (newValue) => {
 				}
 		);
 	}
-
 });
+
+onMounted(() => document.body.addEventListener('click', disableMobileMenu));
+onUnmounted(() => document.body.removeEventListener('click', disableMobileMenu));
 
 </script>
 

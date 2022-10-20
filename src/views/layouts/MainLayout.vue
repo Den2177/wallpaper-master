@@ -11,6 +11,7 @@
 </template>
 
 <script setup>
+
 import HeaderBlock from "../components/blocks/HeaderBlock.vue";
 import NavbarBlock from "../components/blocks/NavbarBlock.vue";
 </script>
@@ -30,5 +31,9 @@ import NavbarBlock from "../components/blocks/NavbarBlock.vue";
 	.main-body {
 		grid-template-columns: 1fr;
 	}
+	.main {
+		margin-top: 110px;
+	}
 }
+
 </style>

@@ -92,7 +92,6 @@ body {
 	gap: 10px;
 }
 
-
 .upper {
 	text-transform: uppercase;
 }
