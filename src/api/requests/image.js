@@ -1,27 +1,52 @@
 import axios from "../config/axios-config.js";
 import api from "../config/api.js";
-import {convertObjToFormData, mountParametersToQueryString, throttle} from "../../services/functions";
+import {convertObjToFormData, debounce, mountParametersToQueryString, throttle} from "../../services/functions";
 
-const throttledRequestImagesByName = throttle((imageName) => {
-    return axios.get(mountParametersToQueryString('/top', {
+const throttledRequestImagesByName = throttle((imageName, offset) => {
+    console.log('result!');
+    return axios.get(mountParametersToQueryString(`/top`, {
         name: imageName,
+        offset,
     }));
 }, api.throttleMs);
 
-export function requestImagesByName(imageName)  {
-    return throttledRequestImagesByName(imageName);
+const getDebouncedRecommendedImages = debounce((offset) => {
+    return axios.get(mountParametersToQueryString('/recommended', {
+        offset: offset,
+    }));
+}, api.throttleMs);
+
+const getDebouncedMyImages = debounce((offset) => {
+    return axios.get(mountParametersToQueryString('/images', {
+        offset: offset,
+    }));
+}, api.throttleMs);
+
+const getDebouncedLikedImages = debounce((offset) => {
+    return axios.get(mountParametersToQueryString('/liked', {
+        offset: offset,
+    }));
+}, api.throttleMs);
+
+
+export function requestImagesByName(imageName, offset)  {
+    return throttledRequestImagesByName(imageName, offset);
 }
 
 export function storeImage(data) {
     return axios.post('/images', convertObjToFormData(data));
 }
 
-export function requestMyImages() {
-    return axios.get('/images');
+export function requestMyImages(offset) {
+    return getDebouncedMyImages(offset);
 }
 
-export function requestRecommendedImages() {
-    return axios.get('/recommended');
+export function requestRecommendedImages(offset) {
+    return getDebouncedRecommendedImages(offset);
+}
+
+export function requestLikedImages(offset) {
+    return getDebouncedLikedImages(offset);
 }
 
 export function requestOneImage(imageId) {
@@ -36,8 +61,4 @@ export function requestDownloadImage(imageId) {
 
 export function requestToggleLike(imageId) {
     return axios.get(`/images/${imageId}/like`);
-}
-
-export function requestLikedImages() {
-    return axios.get(`/liked`);
 }

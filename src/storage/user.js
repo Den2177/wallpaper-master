@@ -4,7 +4,7 @@ export const pushTokenToStorage = (token) => {
     return true;
 }
 
-export const clearUserFromStorage= () => {
+export const clearTokenFromStorage = () => {
     localStorage.removeItem('token');
 
     return true;

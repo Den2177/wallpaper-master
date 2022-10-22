@@ -1,6 +1,6 @@
 import {defineStore} from "pinia";
 import {computed, reactive, ref} from "vue";
-import {clearUserFromStorage, pushTokenToStorage} from "../storage/user.js";
+import {clearTokenFromStorage, pushTokenToStorage} from "../storage/user.js";
 import {login, register, requestAuthedUser} from "../api/requests/auth";
 import axios from "../api/config/axios-config.js";
 import {saveStatisticToStorage} from "../storage/statistic.js";
@@ -41,10 +41,7 @@ export const useAuthStore = defineStore('auth',  () => {
 
     async function logout() {
         Object.assign(user, {});
-        clearUserFromStorage();
-        return new Promise((resolve, reject) => {
-            resolve(true);
-        });
+        clearTokenFromStorage();
     }
 
     async function setAuthedUser() { //return authed user or null

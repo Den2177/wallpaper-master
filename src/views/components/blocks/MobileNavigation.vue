@@ -65,4 +65,8 @@ async function logout() {
 	font-size: 1.2rem;
 }
 
+.link.active {
+	color: #ff514f;
+}
+
 </style>

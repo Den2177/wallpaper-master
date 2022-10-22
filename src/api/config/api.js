@@ -1,4 +1,4 @@
 export default {
-    url: 'https://www.wallpapper-master.ru/api',
-    throttleMs: 1000,
+    url: 'http://127.0.0.1:8000/api',
+    throttleMs: 1500,
 }

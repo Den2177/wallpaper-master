@@ -13,12 +13,13 @@ import ImagesList from "../components/blocks/ImagesList.vue";
 import {useImageStore} from "../../state/image.js";
 import LoadSpinner from "../components/elements/spinners/LoadSpinner.vue";
 import {useLoaderStore} from "../../state/loader";
+import {useInfiniteScroll} from "../../composables/infinite-scroll.js";
 
 const loaderState = useLoaderStore();
 const store = useImageStore();
 store.setSearchedImages();
 
-
+useInfiniteScroll(store.setSearchedImages);
 </script>
 
 <style scoped>

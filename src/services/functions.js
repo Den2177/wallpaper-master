@@ -85,6 +85,24 @@ export function throttle(func, ms) {
     return wrapper;
 }
 
+export const debounce = (func, ms) => {
+    let isDebounced = false;
+
+    return function() {
+        if (isDebounced) {
+            return null;
+        }
+
+        isDebounced = true;
+
+        setTimeout(() => {
+            isDebounced = false;
+        }, ms)
+
+        return func.apply(this, arguments);
+    }
+}
+
 export const loadPage = (pageName) => {
     return () => import(`../views/pages/${pageName}.vue`);
 }

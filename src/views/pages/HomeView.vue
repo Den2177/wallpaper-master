@@ -11,9 +11,13 @@
 import ImagesList from "../components/blocks/ImagesList.vue";
 import {useImageStore} from "../../state/image";
 import LoadSpinner from "../components/elements/spinners/LoadSpinner.vue";
+import {useInfiniteScroll} from "../../composables/infinite-scroll";
 
 const store = useImageStore();
 await store.setRecommendedImages();
+
+useInfiniteScroll(store.setRecommendedImages);
+
 </script>
 
 <style scoped>

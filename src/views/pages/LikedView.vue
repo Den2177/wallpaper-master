@@ -10,10 +10,12 @@
 <script async setup>
 import ImagesList from "../components/blocks/ImagesList.vue";
 import {useImageStore} from "../../state/image";
+import {useInfiniteScroll} from "../../composables/infinite-scroll";
 
 const imageStore = useImageStore();
 await imageStore.setLikedImages();
 
+useInfiniteScroll(imageStore.setLikedImages);
 </script>
 
 <style scoped>

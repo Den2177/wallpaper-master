@@ -16,19 +16,20 @@
 <script setup>
 import UserInfo from "./UserInfo.vue";
 import SearchInput from "../elements/inputs/SearchInput.vue";
-import {onMounted, onUnmounted, ref, watch, watchEffect} from "vue";
+import {onMounted, onUnmounted, ref, watch} from "vue";
 import {useRouter, useRoute} from "vue-router";
 import {useImageStore} from "../../../state/image";
 import {useAuthStore} from "../../../state/auth";
-import LoadSpinner from "../elements/spinners/LoadSpinner.vue";
 import MobileNavigation from "./MobileNavigation.vue";
 import HeaderBurger from "../elements/burgers/HeaderBurger.vue";
+import LoadSpinner from "../elements/spinners/LoadSpinner.vue";
 
-let searchValue = ref('');
 const router = useRouter();
 const route = useRoute;
 const imageStore = useImageStore();
 const authStore = useAuthStore();
+
+let searchValue = ref('');
 
 let mobileMenuVisible = ref(false);
 let disableMobileMenu = () => mobileMenuVisible.value = false;

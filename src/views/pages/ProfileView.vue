@@ -62,6 +62,7 @@ import {useAuthStore} from "../../state/auth";
 import UserInfo from "../components/blocks/UserInfo.vue";
 import UpdateProfile from "../components/blocks/UpdateProfile.vue";
 import {ref} from "vue";
+import {useInfiniteScroll} from "../../composables/infinite-scroll";
 
 const imageStore = useImageStore();
 const authStore = useAuthStore();
@@ -70,9 +71,11 @@ const popup = ref(null);
 
 await imageStore.setMyImages();
 
-function edit() {
+useInfiniteScroll(imageStore.setMyImages);
+
+/*function edit() {
 	updateBlock.open();
-}
+}*/
 
 </script>
 
