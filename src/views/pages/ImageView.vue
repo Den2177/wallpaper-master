@@ -66,20 +66,27 @@
 						</div>
 
 						<div class="section-block">
-							<div class="mt20 flex-row">
-								<main-button
-										:is-disable="!authStore.isAuthed"
-										@click="downloadImage(image)"
-								>Download
-								</main-button>
+							<div class="mt20 flex-row sb">
+								<div class="flex-row">
+									<main-button
+											:is-disable="!authStore.isAuthed"
+											@click="downloadImage(image)"
+									>Download
+									</main-button>
 
-								<like-button
-										v-if="image"
-										:is-disable="!authStore.isAuthed"
-										:class="{active: image.isLiked}"
-										:counter="image.likes"
-										@click="toggleLike(image)"
-								></like-button>
+									<like-button
+											v-if="image"
+											:is-disable="!authStore.isAuthed"
+											:class="{active: image.isLiked}"
+											:counter="+image.likes"
+											@click="toggleLike(image)"
+									></like-button>
+								</div>
+								<div class="item" v-if="isMyImage">
+									<main-button @click="deleteImage">
+										Delete
+									</main-button>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -103,6 +110,7 @@ import {useImageStore} from "../../state/image";
 import {useAuthStore} from "../../state/auth";
 import HeaderBlock from "../components/blocks/HeaderBlock.vue";
 import api from '/src/api/config/api.js';
+import {computed} from "vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -110,6 +118,8 @@ const router = useRouter();
 const authStore = useAuthStore();
 const imageStore = useImageStore();
 const image = imageStore.image;
+
+const isMyImage = computed(() => authStore.userInfo?.id === image.author?.id);
 
 await imageStore.setOneImage(route.params.id);
 
@@ -127,6 +137,10 @@ function toggleLike(image) {
 
 function showAuthorPage() {
 	router.push(`/users/${image.author.id}`);
+}
+
+function deleteImage() {
+	imageStore.deleteImage(image.id);
 }
 
 async function searchWithTag(tag) {

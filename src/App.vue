@@ -4,14 +4,12 @@ import NotificationBlock from "./views/./components/blocks/NotifiactionBlock.vue
 import LoadSpinner from "./views/components/elements/spinners/LoadSpinner.vue";
 import {useLoaderStore} from "./state/loader";
 import {useAuthStore} from "./state/auth";
-import {useInfiniteScroll} from "./composables/infinite-scroll.js";
 import {computed} from "vue";
 
 const authStore = useAuthStore();
 const loaderState = useLoaderStore();
 const router = useRouter();
 const route = useRoute();
-let asd = useInfiniteScroll(() => console.log('console.log'));
 
 authStore.setAuthedUser();
 

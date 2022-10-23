@@ -1,18 +1,20 @@
 import {defineStore} from "pinia";
 import {reactive, ref, watch} from "vue";
 import {
+    requestDeleteImage,
     requestDownloadImage,
     requestImagesByName, requestLikedImages,
     requestMyImages,
     requestOneImage,
     requestRecommendedImages,
     requestToggleLike,
-    storeImage
+    requestStoreImage
 } from "../api/requests/image";
-
+import router from "../router";
 import {downloadImageByData} from "../services/functions";
 import {useProfileStore} from "./profile.js";
 import {useLoaderStore} from "./loader";
+import {requestUserImages} from "../api/requests/user";
 
 export const useImageStore = defineStore('image', () => {
     const profileStore = useProfileStore();
@@ -29,14 +31,14 @@ export const useImageStore = defineStore('image', () => {
     }
 
     async function setUserImages(userId) {
-        await setImages(userId);
+        await setImages(requestUserImages.bind(null, userId, 0));
     }
 
     async function setTopImages() {
         await setImages(requestImagesByName.bind(null, 0, searchValue.value));
     }
 
-    async function setTopImagesByTag(tagName) {
+    function setTopImagesByTag(tagName) {
         searchValue.value = tagName;
     }
 
@@ -50,7 +52,6 @@ export const useImageStore = defineStore('image', () => {
 
     async function setOneImage(imageId) {
         const response = await requestOneImage(imageId);
-
         Object.assign(image, response.data.data);
     }
 
@@ -71,10 +72,20 @@ export const useImageStore = defineStore('image', () => {
     }
 
     async function saveImage(data) {
-        const response = await storeImage(data);
+        const response = await requestStoreImage(data);
         images.value.unshift(response.data.data);
 
         profileStore.updateStatistic();
+    }
+
+    async function deleteImage(imageId) {
+        const response = await requestDeleteImage(imageId);
+
+        if (response.data.success) {
+            images.value = images.value.filter(imageObj => imageObj.id !== imageId);
+
+            router.push('/');
+        }
     }
 
     async function downloadImage(image) {
@@ -104,9 +115,11 @@ export const useImageStore = defineStore('image', () => {
 
     async function setImages(requestFunc) {
         loaderState.show();
+
         images.value = [];
         const response = await requestFunc();
         images.value = response.data.data;
+
         loaderState.hidden();
     }
 
@@ -129,12 +142,13 @@ export const useImageStore = defineStore('image', () => {
         toggleLike,
         setMyImages,
         setOneImage,
+        deleteImage,
         setTopImages,
         setUserImages,
-        setTopImagesByTag,
         downloadImage,
         setLikedImages,
         loadMoreMyImages,
+        setTopImagesByTag,
         loadMoreTopImages,
         loadMoreLikedImages,
         setRecommendedImages,

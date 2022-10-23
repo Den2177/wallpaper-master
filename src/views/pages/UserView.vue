@@ -65,11 +65,10 @@ const route = useRoute();
 const popup = ref(null);
 const userId = route.params.id;
 
-imageStore.clearStore();
 await userStore.setUserInfo(userId);
 await imageStore.setUserImages(userId);
 
-useInfiniteScroll(imageStore.setUserImages.bind(this, userId));
+useInfiniteScroll(imageStore.setUserImages.bind(null, userId));
 </script>
 
 <style scoped>

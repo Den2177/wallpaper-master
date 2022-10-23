@@ -11,6 +11,7 @@ export const useAuthStore = defineStore('auth',  () => {
     let isAuthed = computed(() => !!user.email);
     let userInfo = computed(() => {
         return {
+            id: user.id,
             name: user.name,
             lastname: user.lastname,
             email: user.email,
@@ -55,6 +56,7 @@ export const useAuthStore = defineStore('auth',  () => {
 
     return {
         user,
+
         isAuthed,
         userInfo,
 

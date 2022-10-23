@@ -31,7 +31,11 @@ export function requestImagesByName(offset = 0, imageName)  {
     return throttledRequestImagesByName(imageName, offset);
 }
 
-export function storeImage(data) {
+export function requestDeleteImage(imageId) {
+    return axios.delete(`/images/${imageId}`);
+}
+
+export function requestStoreImage(data) {
     return axios.post('/images', convertObjToFormData(data));
 }
 
