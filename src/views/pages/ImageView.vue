@@ -58,7 +58,7 @@
 						</div>
 						<div class="section-block">
 							<h3>Tags</h3>
-							<div class="tag-list">
+							<div class="tag-list" v-if="image.tags?.length">
 								<div class="tag" style="background: #6349d9;" v-for="tag in image.tags" :key="tag.id" @click="searchWithTag(tag)">
 									{{tag.name}}
 								</div>
