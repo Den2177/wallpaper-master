@@ -84,7 +84,7 @@ export const useImageStore = defineStore('image', () => {
         if (response.data.success) {
             images.value = images.value.filter(imageObj => imageObj.id !== imageId);
 
-            router.push('/');
+            router.push('/profile');
         }
     }
 
