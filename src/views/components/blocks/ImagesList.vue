@@ -13,6 +13,7 @@
 import EmptyMessage from "../templates/EmptyMessage.vue";
 import api from '/src/api/config/api.js';
 
+console.log(api.host);
 const props = defineProps({
 	images: {
 		type: Array,
