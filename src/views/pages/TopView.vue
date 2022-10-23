@@ -17,6 +17,7 @@ import {useInfiniteScroll} from "../../composables/infinite-scroll.js";
 
 const loaderState = useLoaderStore();
 const store = useImageStore();
+store.clearStore();
 store.setSearchedImages();
 
 useInfiniteScroll(store.setSearchedImages);

@@ -13,6 +13,7 @@ import {
 import {getExtensionFromMimes} from "../services/functions";
 import {useProfileStore} from "./profile.js";
 import {useLoaderStore} from "./loader";
+import {requestUserImages} from "../api/requests/user";
 
 export const useImageStore = defineStore('image', () => {
     let images = ref([]);
@@ -23,6 +24,7 @@ export const useImageStore = defineStore('image', () => {
     async function setMyImages() {
         const offset = images.value.length;
         const response = await requestMyImages(offset);
+
         if (!response) return;
 
         if (offset !== 0) {
@@ -31,7 +33,19 @@ export const useImageStore = defineStore('image', () => {
             return;
         }
 
-        images.value = [];
+        images.value = response.data.data;
+    }
+
+    async function setUserImages(userId) {
+        const offset = images.value.length;
+        const response = await requestUserImages(userId, offset);
+        if (!response) return;
+
+        if (offset !== 0) {
+            addNewUniqueImages(response.data.data);
+
+            return;
+        }
         images.value = response.data.data;
     }
 
@@ -56,7 +70,6 @@ export const useImageStore = defineStore('image', () => {
             return;
         }
 
-        images.value = [];
         images.value = response.data.data;
         loaderState.hidden();
     }
@@ -72,7 +85,6 @@ export const useImageStore = defineStore('image', () => {
             return;
         }
 
-        images.value = [];
         images.value = response.data.data;
     }
 
@@ -91,7 +103,6 @@ export const useImageStore = defineStore('image', () => {
             return null;
         }
 
-        images.value = [];
         images.value = response.data.data;
     }
 
@@ -127,14 +138,20 @@ export const useImageStore = defineStore('image', () => {
         });
     }
 
+    function clearStore() {
+        images.value = [];
+    }
+
     return {
         image,
         images,
 
         saveImage,
         toggleLike,
+        clearStore,
         setMyImages,
         setOneImage,
+        setUserImages,
         downloadImage,
         setLikedImages,
         setSearchedImages,

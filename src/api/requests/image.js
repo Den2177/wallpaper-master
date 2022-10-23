@@ -3,7 +3,6 @@ import api from "../config/api.js";
 import {convertObjToFormData, debounce, mountParametersToQueryString, throttle} from "../../services/functions";
 
 const throttledRequestImagesByName = throttle((imageName, offset) => {
-    console.log('result!');
     return axios.get(mountParametersToQueryString(`/top`, {
         name: imageName,
         offset,
