@@ -2,7 +2,7 @@
 	<div>
 		<header-block></header-block>
 		<div class="inner"
-				 :style="{background: `linear-gradient(rgba(13, 12, 15, 0.4), rgba(13, 12, 15, 0.6)), url('${image.url}') center center / cover no-repeat fixed`}">
+				 :style="{background: `linear-gradient(rgba(13, 12, 15, 0.4), rgba(13, 12, 15, 0.6)), url('${api.host + image.url}') center center / cover no-repeat fixed`}">
 			<h2 class="center upper">{{ image.name }}</h2>
 		</div>
 		<div class="main-content">

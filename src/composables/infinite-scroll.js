@@ -1,9 +1,6 @@
 import {onMounted, onUnmounted} from "vue";
-import {useLoaderStore} from "../state/loader";
 
 export const useInfiniteScroll = (requestFunc) => {
-    const loaderState = useLoaderStore();
-
     const checkLoadImages = async () => {
         let scrollHeight = Math.max(
             document.body.scrollHeight, document.documentElement.scrollHeight,
@@ -13,10 +10,9 @@ export const useInfiniteScroll = (requestFunc) => {
 
         const userPoint = document.documentElement.scrollTop + window.innerHeight + 5;
         const bottomOfWindow = scrollHeight <= userPoint;
+
         if (bottomOfWindow) {
-            loaderState.show();
             await requestFunc();
-            loaderState.hidden();
         }
     };
 
