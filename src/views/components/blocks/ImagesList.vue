@@ -2,7 +2,7 @@
 	<div class="images-list" v-if="images.length">
 		<TransitionGroup name="list">
 			<div class="image-item" v-for="image in images" :key="image.id" @click="$router.push(`/images/${image.id}`)">
-				<img :src="image.url" alt="image">
+				<img :src="api.host + image.url" alt="image">
 			</div>
 		</TransitionGroup>
 	</div>
@@ -11,6 +11,7 @@
 
 <script setup>
 import EmptyMessage from "../templates/EmptyMessage.vue";
+import api from '/src/api/config/api.js';
 
 const props = defineProps({
 	images: {

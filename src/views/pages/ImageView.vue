@@ -85,7 +85,7 @@
 					</div>
 
 					<div class="image-big">
-						<img :src="image.url" alt="image1">
+						<img :src="api.host + image.url" alt="image1">
 					</div>
 				</div>
 
@@ -102,6 +102,7 @@ import {useRoute, useRouter} from "vue-router";
 import {useImageStore} from "../../state/image";
 import {useAuthStore} from "../../state/auth";
 import HeaderBlock from "../components/blocks/HeaderBlock.vue";
+import api from '/src/api/config/api.js';
 
 const route = useRoute();
 const router = useRouter();
