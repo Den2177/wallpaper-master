@@ -138,7 +138,7 @@ async function searchWithTag(tag) {
 			}
 	);
 
-	imagesStore.setSearchedImages(tag.name);
+	await imagesStore.setTopImagesByTag(tag.name);
 }
 
 </script>

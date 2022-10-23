@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {reactive, ref} from "vue";
+import {reactive, ref, watch} from "vue";
 import {
     requestDownloadImage,
     requestImagesByName, requestLikedImages,
@@ -10,43 +10,64 @@ import {
     storeImage
 } from "../api/requests/image";
 
-import {getExtensionFromMimes} from "../services/functions";
+import {downloadImageByData} from "../services/functions";
 import {useProfileStore} from "./profile.js";
 import {useLoaderStore} from "./loader";
-import {requestUserImages} from "../api/requests/user";
 
 export const useImageStore = defineStore('image', () => {
-    let images = ref([]);
-    let image = reactive({});
     const profileStore = useProfileStore();
     const loaderState = useLoaderStore();
 
+    const images = ref([]);
+    const image = reactive({});
+    const searchValue = ref('');
+
+    watch(searchValue, setTopImages);
+
     async function setMyImages() {
-        const offset = images.value.length;
-        const response = await requestMyImages(offset);
-
-        if (!response) return;
-
-        if (offset !== 0) {
-            addNewUniqueImages(response.data.data);
-
-            return;
-        }
-
-        images.value = response.data.data;
+        await setImages(requestMyImages);
     }
 
     async function setUserImages(userId) {
-        const offset = images.value.length;
-        const response = await requestUserImages(userId, offset);
-        if (!response) return;
+        await setImages(userId);
+    }
 
-        if (offset !== 0) {
-            addNewUniqueImages(response.data.data);
+    async function setTopImages() {
+        await setImages(requestImagesByName.bind(null, 0, searchValue.value));
+    }
 
-            return;
-        }
-        images.value = response.data.data;
+    async function setTopImagesByTag(tagName) {
+        searchValue.value = tagName;
+    }
+
+    async function setRecommendedImages() {
+        await setImages(requestRecommendedImages);
+    }
+
+    async function setLikedImages() {
+        await setImages(requestLikedImages);
+    }
+
+    async function setOneImage(imageId) {
+        const response = await requestOneImage(imageId);
+
+        Object.assign(image, response.data.data);
+    }
+
+    async function loadMoreMyImages() {
+        await loadAdditionalImages(requestMyImages);
+    }
+
+    async function loadMoreTopImages() {
+        await loadAdditionalImages(requestImagesByName, searchValue.value);
+    }
+
+    async function loadMoreRecommendedImages() {
+        await loadAdditionalImages(requestRecommendedImages);
+    }
+
+    async function loadMoreLikedImages() {
+        await loadAdditionalImages(requestLikedImages);
     }
 
     async function saveImage(data) {
@@ -56,66 +77,9 @@ export const useImageStore = defineStore('image', () => {
         profileStore.updateStatistic();
     }
 
-    async function setSearchedImages(imageName = '') {
-        loaderState.show();
-
-        const offset = images.value.length;
-        const response = await requestImagesByName(imageName, offset);
-        if (!response) return;
-
-        if (offset !== 0) {
-            addNewUniqueImages(response.data.data);
-            loaderState.hidden();
-
-            return;
-        }
-
-        images.value = response.data.data;
-        loaderState.hidden();
-    }
-
-    async function setRecommendedImages() {
-        const offset = images.value.length;
-        const response = await requestRecommendedImages(offset);
-
-        if (!response) return;
-
-        if (offset !== 0) {
-            addNewUniqueImages(response.data.data);
-            return;
-        }
-
-        images.value = response.data.data;
-    }
-
-    async function setOneImage(imageId) {
-        const response = await requestOneImage(imageId);
-        Object.assign(image, response.data.data);
-    }
-
-    async function setLikedImages() {
-        const offset = images.value.length;
-        const response = await requestLikedImages(offset);
-        if (!response) return;
-
-        if (offset) {
-            addNewUniqueImages(response.data.data);
-            return null;
-        }
-
-        images.value = response.data.data;
-    }
-
     async function downloadImage(image) {
         const response = await requestDownloadImage(image.id);
-        const blob = URL.createObjectURL(response.data);
-        const anchor = document.createElement('a');
-        anchor.style.display = 'none';
-        anchor.href = blob;
-        anchor.download = `${Date.now()}.${getExtensionFromMimes(image.mime)}`;
-        document.body.appendChild(anchor);
-        anchor.click();
-        window.URL.revokeObjectURL(blob);
+        downloadImageByData(response.data, image);
 
         profileStore.updateStatistic();
     }
@@ -129,32 +93,51 @@ export const useImageStore = defineStore('image', () => {
         profileStore.updateStatistic();
     }
 
+    async function loadAdditionalImages(requestFunc, imageName) {
+        const offset = images.value.length;
+        const response = await requestFunc(offset, imageName);
+
+        if (response === null) return;
+
+        addNewUniqueImages(response.data.data);
+    }
+
+    async function setImages(requestFunc) {
+        loaderState.show();
+        images.value = [];
+        const response = await requestFunc();
+        images.value = response.data.data;
+        loaderState.hidden();
+    }
+
     function addNewUniqueImages(newImages) {
         newImages.forEach(imageItem => {
             const containsInStore = images.value.map(img => img.id).includes(imageItem.id);
+
             if (containsInStore) return null;
 
             images.value.push(imageItem);
         });
     }
 
-    function clearStore() {
-        images.value = [];
-    }
-
     return {
         image,
         images,
+        searchValue,
 
         saveImage,
         toggleLike,
-        clearStore,
         setMyImages,
         setOneImage,
+        setTopImages,
         setUserImages,
+        setTopImagesByTag,
         downloadImage,
         setLikedImages,
-        setSearchedImages,
+        loadMoreMyImages,
+        loadMoreTopImages,
+        loadMoreLikedImages,
         setRecommendedImages,
+        loadMoreRecommendedImages,
     }
 });

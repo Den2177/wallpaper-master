@@ -8,7 +8,7 @@ export const useInfiniteScroll = (requestFunc) => {
             document.body.clientHeight, document.documentElement.clientHeight
         );
 
-        const userPoint = document.documentElement.scrollTop + window.innerHeight + 5;
+        const userPoint = document.documentElement.scrollTop + window.innerHeight + 2;
         const bottomOfWindow = scrollHeight <= userPoint;
 
         if (bottomOfWindow) {

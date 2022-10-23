@@ -69,10 +69,9 @@ const authStore = useAuthStore();
 const updateBlock = ref(null);
 const popup = ref(null);
 
-imageStore.clearStore();
 await imageStore.setMyImages();
 
-useInfiniteScroll(imageStore.setMyImages);
+useInfiniteScroll(imageStore.loadMoreMyImages);
 
 /*function edit() {
 	updateBlock.open();

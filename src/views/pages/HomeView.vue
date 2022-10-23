@@ -14,10 +14,9 @@ import LoadSpinner from "../components/elements/spinners/LoadSpinner.vue";
 import {useInfiniteScroll} from "../../composables/infinite-scroll";
 
 const store = useImageStore();
-store.clearStore();
 await store.setRecommendedImages();
 
-useInfiniteScroll(store.setRecommendedImages);
+useInfiniteScroll(store.loadMoreRecommendedImages);
 
 </script>
 

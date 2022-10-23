@@ -110,3 +110,14 @@ export const loadPage = (pageName) => {
 export const getExtensionFromMimes = (mime) => {
     return mime.split('/')[1];
 }
+
+export const downloadImageByData = (data, image) => {
+    const blob = URL.createObjectURL(data);
+    const anchor = document.createElement('a');
+    anchor.style.display = 'none';
+    anchor.href = blob;
+    anchor.download = `${Date.now()}.${getExtensionFromMimes(image.mime)}`;
+    document.body.appendChild(anchor);
+    anchor.click();
+    window.URL.revokeObjectURL(blob);
+}

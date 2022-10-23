@@ -13,10 +13,9 @@ import {useImageStore} from "../../state/image";
 import {useInfiniteScroll} from "../../composables/infinite-scroll";
 
 const imageStore = useImageStore();
-imageStore.clearStore();
 await imageStore.setLikedImages();
 
-useInfiniteScroll(imageStore.setLikedImages);
+useInfiniteScroll(imageStore.loadMoreLikedImages);
 </script>
 
 <style scoped>
