@@ -29,9 +29,14 @@ import FileInput from "../elements/inputs/FileInput.vue";
 import TagsInput from "../elements/inputs/TagsInput.vue";
 import {reactive, ref} from "vue";
 import {useImageStore} from "../../../state/image.js";
+import {useNotification} from "../../../composables/notification.js";
+import {formatErrorMessage} from "../../../services/functions";
+import {useLoaderStore} from "../../../state/loader";
 
 const popup = ref(null);
 const store = useImageStore();
+const {showNotification} = useNotification();
+const loaderState = useLoaderStore();
 const imageFields = reactive({
 	name: '',
 	image: '',
@@ -54,11 +59,30 @@ function setImage(file) {
 	imageFields.image = file;
 }
 
-function upload() {
-	popup.value.open().then(() => {
-		store.saveImage(imageFields);
+async function upload() {
+
+	const response = await popup.value.open();
+
+	if (response) {
+		loaderState.show();
+
+		store.saveImage(imageFields)
+				.then(() =>{
+					showNotification({
+						message: "Successful upload",
+						isError: false,
+					})
+				})
+				.catch(err => {
+					showNotification({
+						message: formatErrorMessage(err.response.data.errors),
+						isError: true,
+					});
+				})
+				.finally(() => loaderState.hidden());
+
 		clearFields();
-	});
+	}
 }
 </script>
 

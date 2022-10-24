@@ -2,9 +2,15 @@
 <div class="notifications">
 	<TransitionGroup name="list">
 		<div class="notification" :class="{'error': notification.isError}" v-for="notification in notifications" :key="notification.id">
-			<h4>{{notification.title}}</h4>
+			<div class="icon">
+				<error-icon v-if="notification.isError"></error-icon>
+				<success-icon v-else></success-icon>
+			</div>
+			<div class="content">
+				<h4>{{notification.title}}</h4>
 
-			<div class="message" v-html="notification.message">
+				<div class="message" v-html="notification.message">
+				</div>
 			</div>
 		</div>
 	</TransitionGroup>
@@ -13,12 +19,19 @@
 
 <script setup>
 import {useNotification} from "../../../composables/notification.js";
+import SuccessIcon from "../icons/SuccessIcon.vue";
+import ErrorIcon from "../icons/ErrorIcon.vue";
 
 const {notifications} = useNotification();
 
 </script>
 
 <style scoped>
+.icon > img {
+	width: fit-content;
+	height: fit-content;
+	object-fit: none;
+}
 .notifications {
 	display: flex;
 	position: fixed;
@@ -37,6 +50,9 @@ const {notifications} = useNotification();
 	border-radius: 4px;
 	background-color: #8392ff;
 	opacity: .8;
+	display: flex;
+	align-items: center;
+	gap: 15px;
 }
 .notification.error {
 	background-color: #ff514f;

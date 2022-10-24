@@ -21,7 +21,7 @@ const layout = computed(() => {
 </script>
 
 <template>
-	<div>
+	<div class="main-container" :class="{blocked: loaderState.isActive}">
 		<component :is="layout">
 			<RouterView v-slot="{ Component }">
 				<template v-if="Component">
@@ -37,12 +37,17 @@ const layout = computed(() => {
 			</RouterView>
 		</component>
 
+		<load-spinner v-if="loaderState.isActive"></load-spinner>
+
 		<notification-block></notification-block>
 	</div>
 
 </template>
 
 <style>
+.main-container.blocked {
+	pointer-events: none;
+}
 .page-enter-active,
 .page-leave-active {
 	transition: opacity 0.3s ease;
@@ -58,6 +63,10 @@ const layout = computed(() => {
 	margin: 0 auto;
 	padding: 0 20px;
 	box-sizing: content-box;
+}
+
+.pt10 {
+	padding-top: 10px;
 }
 
 body {

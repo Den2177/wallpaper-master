@@ -6,12 +6,11 @@ import {defineStore} from "pinia/dist/pinia";
 export const useProfileStore = defineStore('profile', () => {
     const authStore = useAuthStore();
 
-    function updateStatistic() {
-        requestMyStatistic().then(response => {
-            const statistic = authStore.user.statistic;
-            Object.assign(statistic, response.data.data);
-            saveStatisticToStorage(statistic);
-        });
+    async function updateStatistic() {
+        const response = await requestMyStatistic();
+        const statistic = authStore.user.statistic;
+        Object.assign(statistic, response.data.data);
+        saveStatisticToStorage(statistic);
     }
 
     async function updateProfile(data) {

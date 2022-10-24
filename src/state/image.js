@@ -72,10 +72,12 @@ export const useImageStore = defineStore('image', () => {
     }
 
     async function saveImage(data) {
+
         const response = await requestStoreImage(data);
         images.value.unshift(response.data.data);
 
-        profileStore.updateStatistic();
+        await profileStore.updateStatistic();
+
     }
 
     async function deleteImage(imageId) {

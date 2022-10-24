@@ -12,6 +12,9 @@
 				<a href="#" v-if="authStore.isAuthed" class="link" @click.prevent="logout">Logout</a>
 			</div>
 		</div>
+		<modal-window ref="popup">
+			<h3 class="center pt10">Are you sure you want to get out?</h3>
+		</modal-window>
 	</nav>
 </template>
 
@@ -19,20 +22,26 @@
 import {useAuthStore} from "../../../state/auth";
 import {useRouter} from "vue-router";
 import {ref} from "vue";
+import ModalWindow from "../templates/ModalWindow.vue";
 
 const authStore = useAuthStore();
 const router = useRouter();
 let mobileMenuVisible = ref(false);
+const popup = ref(null);
 
-function logout() {
-	authStore.logout()
-			.then(res => {
-				router.push(
-						{
-							name: 'login',
-						}
-				)
-			});
+async function logout() {
+	const response = await popup.value.open();
+	if (response) {
+		authStore.logout()
+				.then(res => {
+					router.push(
+							{
+								name: 'login',
+							}
+					)
+				});
+	}
+
 }
 
 </script>
