@@ -52,18 +52,20 @@
 <script async setup>
 import ImagesList from "../components/blocks/ImagesList.vue";
 import ModalWindow from "../components/templates/ModalWindow.vue";
-import {ref} from "vue";
 import UserInfo from "../components/blocks/UserInfo.vue";
-import {useUserStore} from "../../state/user";
 import {useRoute} from "vue-router";
 import {useInfiniteScroll} from "../../composables/infinite-scroll";
+import {useUserStore} from "../../state/user";
 import {useImageStore} from "../../state/image";
+import {ref} from "vue";
 
 const userStore = useUserStore();
 const imageStore = useImageStore();
+
 const route = useRoute();
 const popup = ref(null);
-const userId = route.params.id;
+
+const userId = defineProps(['id']);
 
 await userStore.setUserInfo(userId);
 await imageStore.setUserImages(userId);
@@ -72,13 +74,11 @@ useInfiniteScroll(imageStore.setUserImages.bind(null, userId));
 </script>
 
 <style scoped>
-
 .profile-body {
 	display: grid;
 	grid-template-columns: 1fr 4fr;
 	gap: 20px;
 }
-
 
 .user-bar > .avatar-big {
 	margin-bottom: 15px;

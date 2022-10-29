@@ -38,15 +38,19 @@ const props = defineProps({
 .like-svg:hover {
 	fill: #ff514f;
 }
+
 .like-svg:hover {
 	transform: scale(1.05);
 }
+
 .like-wrapper.active .like-svg {
 	fill: #ff514f;
 }
+
 .like-number {
 	position: absolute;
 	bottom: 7px;
+	user-select:none;
 	right: 7px;
 	color: #a4a4a4;
 	font-weight: 700;

@@ -38,13 +38,7 @@ setTimeout(() => {
 		imageStore.setTopImages();
 
 		console.log('changeSearchValue');
-		if (route.name !== 'top') {
-			router.push(
-					{
-						name: 'top',
-					}
-			);
-		}
+
 	});
 }, 2000)
 

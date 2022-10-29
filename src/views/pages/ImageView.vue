@@ -13,8 +13,8 @@
 							<h3>Author</h3>
 							<user-info
 									v-if="image.author"
-									@click="showAuthorPage"
 									:user="image.author"
+									@click="showAuthorPage"
 							></user-info>
 						</div>
 						<div class="section-block">
@@ -59,8 +59,9 @@
 						<div class="section-block" v-if="image.tags?.length">
 							<h3>Tags</h3>
 							<div class="tag-list">
-								<div class="tag" style="background: #6349d9;" v-for="tag in image.tags" :key="tag.id" @click="searchWithTag(tag)">
-									{{tag.name}}
+								<div class="tag" style="background: #6349d9;" v-for="tag in image.tags" :key="tag.id"
+										 @click="searchWithTag(tag)">
+									{{ tag.name }}
 								</div>
 							</div>
 						</div>
@@ -105,23 +106,25 @@
 import MainButton from "../components/elements/buttons/MainButton.vue";
 import LikeButton from "../components/elements/buttons/LikeButton.vue";
 import UserInfo from "../components/blocks/UserInfo.vue";
-import {useRoute, useRouter} from "vue-router";
+import {useRouter} from "vue-router";
 import {useImageStore} from "../../state/image";
 import {useAuthStore} from "../../state/auth";
 import HeaderBlock from "../components/blocks/HeaderBlock.vue";
 import api from '/src/api/config/api.js';
 import {computed} from "vue";
 
-const route = useRoute();
 const router = useRouter();
 
 const authStore = useAuthStore();
 const imageStore = useImageStore();
+
+const props = defineProps(['id']);
+
 const image = imageStore.image;
 
 const isMyImage = computed(() => authStore.userInfo?.id === image.author?.id);
 
-await imageStore.setOneImage(route.params.id);
+await imageStore.setOneImage(props.id);
 
 function downloadImage(image) {
 	imageStore.downloadImage(image);
@@ -139,8 +142,10 @@ function showAuthorPage() {
 	router.push(`/users/${image.author.id}`);
 }
 
-function deleteImage() {
-	imageStore.deleteImage(image.id);
+async function deleteImage() {
+	await imageStore.deleteImage(image.id);
+
+	router.back();
 }
 
 async function searchWithTag(tag) {
@@ -158,6 +163,8 @@ async function searchWithTag(tag) {
 </script>
 
 <style scoped>
+
+
 .main-content {
 	padding: 75px 0;
 }

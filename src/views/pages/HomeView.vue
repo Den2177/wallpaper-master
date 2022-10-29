@@ -1,7 +1,7 @@
 <template>
 	<div class="images-list">
 		<div class="header-block">
-			<h2>Recommended images for you</h2>
+			<h2>Fresh images</h2>
 		</div>
 		<images-list :images="store.images"></images-list>
 	</div>
@@ -10,7 +10,6 @@
 <script async setup>
 import ImagesList from "../components/blocks/ImagesList.vue";
 import {useImageStore} from "../../state/image";
-import LoadSpinner from "../components/elements/spinners/LoadSpinner.vue";
 import {useInfiniteScroll} from "../../composables/infinite-scroll";
 
 const store = useImageStore();

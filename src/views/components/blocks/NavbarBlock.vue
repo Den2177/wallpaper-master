@@ -26,21 +26,17 @@ import ModalWindow from "../templates/ModalWindow.vue";
 
 const authStore = useAuthStore();
 const router = useRouter();
-let mobileMenuVisible = ref(false);
 const popup = ref(null);
+let mobileMenuVisible = ref(false);
 
 async function logout() {
 	const response = await popup.value.open();
-	if (response) {
-		authStore.logout()
-				.then(res => {
-					router.push(
-							{
-								name: 'login',
-							}
-					)
-				});
-	}
+	if (!response) return;
+
+	await authStore.logout();
+	router.push('/');
+	location.reload();
+
 
 }
 

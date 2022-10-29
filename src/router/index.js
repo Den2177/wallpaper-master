@@ -2,8 +2,11 @@ import {createRouter, createWebHistory} from 'vue-router';
 import MainLayout from '../views/layouts/MainLayout.vue';
 import AuthLayout from '../views/layouts/AuthLayout.vue';
 import {loadPage} from '../services/functions.js';
-
+import {useNotification} from "../composables/notification";
+import {useAuthStore} from "../state/auth";
+import {getTokenFromStorage} from "../storage/user";
 const load = loadPage;
+
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     linkActiveClass: 'active',
@@ -14,12 +17,14 @@ const router = createRouter({
             component: load('HomeView'),
             meta: {
                 layout: MainLayout,
-            }
+            },
+            alias: ['/home', '/main'],
         },
         {
             path: '/images/:id',
             name: 'image',
             component: load('ImageView'),
+            props: true,
         },
         {
             path: '/liked',
@@ -44,7 +49,8 @@ const router = createRouter({
             component: load('UserView'),
             meta: {
                 layout: MainLayout,
-            }
+            },
+            props: true,
         },
         {
             path: '/top',
@@ -70,7 +76,39 @@ const router = createRouter({
                 layout: AuthLayout,
             }
         },
-    ]
-})
+        {
+            path: '/:path(.*)',
+            name: 'not found',
+            component: load('NotFound'),
+        }
+    ],
+    scrollBehavior(to, from, savedPosition) {
+        return savedPosition ? {
+            top: savedPosition.top,
+            left: 0,
+            behavior: 'smooth',
+        } : {top: 0};
+    },
+});
+
+
+router.beforeEach((to, from, next ) => {
+    const {showNotification} = useNotification();
+    const isNotAuthed = !(!!getTokenFromStorage());
+    if (isNotAuthed) {
+        const forbiddenRoutes = ['profile', 'liked'];
+
+        if (forbiddenRoutes.includes(to.name)) {
+            showNotification({
+                isError: true,
+                message: 'No access to this page'
+            });
+
+            return next(from);
+        }
+    }
+
+    next();
+});
 
 export default router

@@ -10,21 +10,33 @@ import {
     requestToggleLike,
     requestStoreImage
 } from "../api/requests/image";
-import router from "../router";
 import {downloadImageByData} from "../services/functions";
 import {useProfileStore} from "./profile.js";
 import {useLoaderStore} from "./loader";
 import {requestUserImages} from "../api/requests/user";
+import {useRoute, useRouter} from "vue-router";
 
 export const useImageStore = defineStore('image', () => {
     const profileStore = useProfileStore();
     const loaderState = useLoaderStore();
+    const route = useRoute();
+    const router = useRouter();
 
     const images = ref([]);
     const image = reactive({});
     const searchValue = ref('');
 
-    watch(searchValue, setTopImages);
+    watch(searchValue, async () => {
+        await setTopImages();
+
+        if (route.name !== 'top') {
+            await router.push(
+                {
+                    name: 'top',
+                }
+            );
+        }
+    });
 
     async function setMyImages() {
         await setImages(requestMyImages);
@@ -77,7 +89,6 @@ export const useImageStore = defineStore('image', () => {
         images.value.unshift(response.data.data);
 
         await profileStore.updateStatistic();
-
     }
 
     async function deleteImage(imageId) {
@@ -86,7 +97,7 @@ export const useImageStore = defineStore('image', () => {
         if (response.data.success) {
             images.value = images.value.filter(imageObj => imageObj.id !== imageId);
 
-            router.push('/profile');
+            await profileStore.updateStatistic();
         }
     }
 

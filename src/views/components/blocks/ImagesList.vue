@@ -50,23 +50,26 @@ const props = defineProps({
 	cursor: pointer;
 	height: 220px;
 }
+
 .image-item:hover {
 	transform: scale(1.02);
 }
+
 .image-item img {
 	border-radius: 20px;
 }
 
-@media(max-width: 950px) {
+@media (max-width: 950px) {
 	.images-list {
 		grid-template-columns: 1fr 1fr;
 	}
 }
 
-@media(max-width: 560px) {
+@media (max-width: 560px) {
 	.images-list {
 		grid-template-columns: 1fr;
 	}
+
 	.image-item {
 		height: 200px;
 	}
