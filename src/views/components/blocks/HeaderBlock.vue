@@ -4,7 +4,7 @@
 
 			<header-burger @click.stop :active="mobileMenuVisible" @toggle="mobileMenuVisible = !mobileMenuVisible"></header-burger>
 
-			<user-info @click="$router.push('/profile')" class="user-info-header" :user="authStore.userInfo"></user-info>
+			<user-info @click="$router.push('/profile')" class="user-info-header" :user="authStore.userInfo" v-if="authStore.isAuthed"></user-info>
 
 			<search-input v-model="imageStore.searchValue"></search-input>
 		</div>

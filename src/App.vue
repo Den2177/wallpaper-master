@@ -57,7 +57,12 @@ const layout = computed(() => {
 .page-leave-to {
 	opacity: 0;
 }
-
+.link {
+	transition: color .2s ease;
+}
+.link:hover {
+	color: #ff514f;
+}
 .container {
 	max-width: 1260px;
 	margin: 0 auto;

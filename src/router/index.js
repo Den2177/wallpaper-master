@@ -3,8 +3,9 @@ import MainLayout from '../views/layouts/MainLayout.vue';
 import AuthLayout from '../views/layouts/AuthLayout.vue';
 import {loadPage} from '../services/functions.js';
 import {useNotification} from "../composables/notification";
-import {useAuthStore} from "../state/auth";
 import {getTokenFromStorage} from "../storage/user";
+import {useAuthStore} from "../state/auth";
+
 const load = loadPage;
 
 const router = createRouter({
@@ -41,7 +42,6 @@ const router = createRouter({
             meta: {
                 layout: MainLayout,
             }
-
         },
         {
             path: '/users/:id',
@@ -78,23 +78,39 @@ const router = createRouter({
         },
         {
             path: '/:path(.*)',
-            name: 'not found',
+            name: '404',
             component: load('NotFound'),
         }
     ],
     scrollBehavior(to, from, savedPosition) {
-        return savedPosition ? {
-            top: savedPosition.top,
-            left: 0,
-            behavior: 'smooth',
-        } : {top: 0};
+
+        return new Promise((resolve, reject) => {
+
+            setTimeout(() => {
+
+                if (savedPosition) {
+                    resolve({
+                        top: savedPosition.top,
+                        left: 0,
+                        behavior: 'smooth',
+                    });
+                } else {
+                    resolve({
+                        top: 0,
+                        left: 0,
+                    })
+                }
+            }, 1100);
+
+        });
     },
 });
 
 
-router.beforeEach((to, from, next ) => {
+router.beforeEach((to, from, next) => {
     const {showNotification} = useNotification();
     const isNotAuthed = !(!!getTokenFromStorage());
+
     if (isNotAuthed) {
         const forbiddenRoutes = ['profile', 'liked'];
 

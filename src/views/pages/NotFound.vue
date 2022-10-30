@@ -1,10 +1,15 @@
 <template>
 	<div class="bc">
 		<h2>404 Not found</h2>
+		<router-link to="home" class="link">To home page</router-link>
 	</div>
 </template>
 
 <script>
+import MainButton from "../components/elements/buttons/MainButton.vue";
+export default {
+	components: {MainButton}
+}
 </script>
 
 <style scoped>
@@ -20,5 +25,8 @@
 h2 {
 	font-size: 4rem;
 	color: #1a161f;
+}
+.link {
+	margin-top: 40px;
 }
 </style>

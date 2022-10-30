@@ -3,6 +3,7 @@
 		<div class="header-block">
 			<h2>Fresh images</h2>
 		</div>
+
 		<images-list :images="store.images"></images-list>
 	</div>
 </template>

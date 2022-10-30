@@ -112,7 +112,9 @@ import {useAuthStore} from "../../state/auth";
 import HeaderBlock from "../components/blocks/HeaderBlock.vue";
 import api from '/src/api/config/api.js';
 import {computed} from "vue";
+import {useNotification} from "../../composables/notification";
 
+const {showNotification} = useNotification();
 const router = useRouter();
 
 const authStore = useAuthStore();
@@ -124,7 +126,20 @@ const image = imageStore.image;
 
 const isMyImage = computed(() => authStore.userInfo?.id === image.author?.id);
 
-await imageStore.setOneImage(props.id);
+await loadPage();
+
+async function loadPage() {
+	try {
+		await imageStore.setOneImage(props.id);
+	} catch(err) {
+		await router.push('/not-found');
+
+		showNotification({
+			isError: true,
+			message: err.message,
+		});
+	}
+}
 
 function downloadImage(image) {
 	imageStore.downloadImage(image);
@@ -151,13 +166,13 @@ async function deleteImage() {
 async function searchWithTag(tag) {
 	const imagesStore = useImageStore();
 
+	await imagesStore.setTopImagesByTag(tag.name);
+
 	await router.push(
 			{
 				name: 'top',
 			}
 	);
-
-	await imagesStore.setTopImagesByTag(tag.name);
 }
 
 </script>

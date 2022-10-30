@@ -35,7 +35,7 @@
 			</div>
 			<div class="images-block mt20">
 				<div class="header-block">
-					<h2>{{userStore.user.name}}'s images</h2>
+					<h2>{{ userStore.user.name }}'s images</h2>
 				</div>
 				<images-list :images="imageStore.images"></images-list>
 			</div>
@@ -46,31 +46,47 @@
 	</div>
 
 
-
 </template>
 
 <script async setup>
 import ImagesList from "../components/blocks/ImagesList.vue";
 import ModalWindow from "../components/templates/ModalWindow.vue";
 import UserInfo from "../components/blocks/UserInfo.vue";
-import {useRoute} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import {useInfiniteScroll} from "../../composables/infinite-scroll";
 import {useUserStore} from "../../state/user";
 import {useImageStore} from "../../state/image";
-import {ref} from "vue";
+import {nextTick, ref} from "vue";
+import {useNotification} from "../../composables/notification";
+const {showNotification} = useNotification();
 
+const router = useRouter();
 const userStore = useUserStore();
 const imageStore = useImageStore();
 
 const route = useRoute();
 const popup = ref(null);
 
-const userId = defineProps(['id']);
+const props = defineProps(['id']);
 
-await userStore.setUserInfo(userId);
-await imageStore.setUserImages(userId);
+await loadPage();
 
-useInfiniteScroll(imageStore.setUserImages.bind(null, userId));
+async function loadPage() {
+	try {
+		await userStore.setUserInfo(props.id)
+		await imageStore.setUserImages(props.id);
+	} catch (err) {
+		await router.push('/not-found');
+
+		showNotification({
+			isError: true,
+			message: err.message,
+		});
+
+	}
+}
+
+useInfiniteScroll(imageStore.setUserImages.bind(null, props.id));
 </script>
 
 <style scoped>

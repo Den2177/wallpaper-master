@@ -5,11 +5,10 @@ import {requestUserInfo, requestUserImages} from "../api/requests/user";
 export const useUserStore = defineStore('user', () => {
     let user = ref({});
 
-    function setUserInfo(userId) {
-        requestUserInfo(userId).then(response => {
-            const userData = response.data.data;
-            Object.assign(user.value, userData);
-        });
+    async function setUserInfo(userId) {
+        const response = await requestUserInfo(userId);
+        const userData = response.data.data;
+        Object.assign(user.value, userData);
     }
 
     return {
