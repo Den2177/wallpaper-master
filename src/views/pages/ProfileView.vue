@@ -9,7 +9,7 @@
 					</div>
 
 					<div class="statistics">
-						<div class="statistic-block">
+						<div class="statistic-block" v-if="authStore.user.statistic">
 							<div class="number">
 								<Transition>
 									{{authStore.user.statistic.uploads}}
@@ -61,21 +61,14 @@ import {useImageStore} from "../../state/image";
 import {useAuthStore} from "../../state/auth";
 import UserInfo from "../components/blocks/UserInfo.vue";
 import UpdateProfile from "../components/blocks/UpdateProfile.vue";
-import {ref} from "vue";
 import {useInfiniteScroll} from "../../composables/infinite-scroll";
 
 const imageStore = useImageStore();
 const authStore = useAuthStore();
-const updateBlock = ref(null);
-const popup = ref(null);
 
 await imageStore.setMyImages();
 
 useInfiniteScroll(imageStore.loadMoreMyImages);
-
-/*function edit() {
-	updateBlock.open();
-}*/
 
 </script>
 

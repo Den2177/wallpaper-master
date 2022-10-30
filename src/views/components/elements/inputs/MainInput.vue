@@ -1,6 +1,6 @@
 <template>
 	<input :type="type" class="input" :class="{'file': props.type === 'file'}" :value="modelValue"
-				 @input="$emit('update:modelValue',$event.target.value)">
+				 @input="$emit('update:modelValue', $event.target.value)">
 </template>
 
 <script setup>

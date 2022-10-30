@@ -79,7 +79,7 @@
 											v-if="image"
 											:is-disable="!authStore.isAuthed"
 											:class="{active: image.isLiked}"
-											:counter="+image.likes"
+											:counter="+image?.likes"
 											@click="toggleLike(image)"
 									></like-button>
 								</div>

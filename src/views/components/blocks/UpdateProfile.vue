@@ -16,7 +16,7 @@
 					<main-input type="email" v-model="profileFields.email"></main-input>
 				</input-wrapper>
 				<input-wrapper hint="Avatar">
-					<file-input @change-file="setFile">
+					<file-input @change-file="setFile" :value="authStore.user.avatar ? authStore.user.avatar.filename : ''">
 					</file-input>
 				</input-wrapper>
 			</form-template>
@@ -33,14 +33,21 @@ import MainButton from "../elements/buttons/MainButton.vue";
 import MainInput from "../elements/inputs/MainInput.vue";
 import {reactive, ref} from "vue";
 import {useProfileStore} from "../../../state/profile";
+import {useAuthStore} from "../../../state/auth";
+import {useNotification} from "../../../composables/notification";
+import {formatErrorMessage} from "../../../services/functions";
+
+const {showNotification} = useNotification();
 
 const popup = ref(null);
 const profileStore = useProfileStore();
+const authStore = useAuthStore();
+
 
 const profileFields = reactive({
-	name: '',
-	lastname: '',
-	email: '',
+	name: authStore.user.name,
+	lastname: authStore.user.lastname,
+	email: authStore.user.email,
 	avatar: '',
 });
 
@@ -55,8 +62,17 @@ async function edit() {
 	update();
 }
 
-function update() {
-	profileStore.updateProfile(profileFields);
+async function update() {
+	try {
+		await profileStore.updateProfile(profileFields);
+	} catch (err){
+		console.log(err.response.data.errors);
+
+		showNotification({
+			isError: true,
+			message: formatErrorMessage(err.response.data.errors),
+		});
+	}
 }
 
 </script>
