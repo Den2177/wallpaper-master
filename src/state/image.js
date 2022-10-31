@@ -3,7 +3,8 @@ import {reactive, ref, watch} from "vue";
 import {
     requestDeleteImage,
     requestDownloadImage,
-    requestImagesByName, requestLikedImages,
+    requestImagesByName,
+    requestLikedImages,
     requestMyImages,
     requestOneImage,
     requestRecommendedImages,
@@ -19,6 +20,7 @@ import {useRoute, useRouter} from "vue-router";
 export const useImageStore = defineStore('image', () => {
     const profileStore = useProfileStore();
     const loaderState = useLoaderStore();
+
     const route = useRoute();
     const router = useRouter();
 
@@ -33,13 +35,13 @@ export const useImageStore = defineStore('image', () => {
             await router.push(
                 {
                     name: 'top',
-                    query: { name: searchValue.value }
+                    query: {name: searchValue.value}
                 }
             );
         } else {
             await router.replace(
                 {
-                    query: { name: searchValue.value }
+                    query: {name: searchValue.value}
                 }
             );
         }
@@ -55,9 +57,10 @@ export const useImageStore = defineStore('image', () => {
 
     async function setTopImages() {
         await setImages(requestImagesByName.bind(null, 0, searchValue.value));
+
         await router.replace(
             {
-                query: { name: searchValue.value }
+                query: {name: searchValue.value}
             }
         );
     }
@@ -96,7 +99,6 @@ export const useImageStore = defineStore('image', () => {
     }
 
     async function saveImage(data) {
-
         const response = await requestStoreImage(data);
         images.value.unshift(response.data.data);
 
@@ -143,6 +145,12 @@ export const useImageStore = defineStore('image', () => {
 
         images.value = [];
         const response = await requestFunc();
+
+        if (response === null) {
+            setTimeout(() => setImages(requestFunc), 1000);
+            return;
+        }
+
         images.value = response.data.data;
 
         loaderState.hidden();

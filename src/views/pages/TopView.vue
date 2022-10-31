@@ -14,8 +14,11 @@ import TitleTemplate from "../components/templates/TitleTemplate.vue";
 
 const loaderState = useLoaderStore();
 const store = useImageStore();
+
 await store.setTopImages();
+
 useInfiniteScroll(store.loadMoreTopImages);
+
 </script>
 
 <style scoped>
