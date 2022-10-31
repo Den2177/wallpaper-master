@@ -41,7 +41,6 @@ const layout = computed(() => {
 
 		<notification-block></notification-block>
 	</div>
-
 </template>
 
 <style>

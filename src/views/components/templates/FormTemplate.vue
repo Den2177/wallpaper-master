@@ -6,8 +6,6 @@
 
 <script setup>
 const event = defineEmits(['submit']);
-
-
 </script>
 
 <style scoped>

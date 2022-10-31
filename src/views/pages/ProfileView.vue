@@ -6,10 +6,8 @@
 					<div class="left-content flex-row">
 						<user-info :is-big-avatar="true" :user="authStore.user" class="mb20"></user-info>
 					</div>
-
 					<statistic-block :statistic="authStore.user.statistic" v-if="authStore.user.statistic"></statistic-block>
 				</div>
-
 				<update-profile ref="update-block"></update-profile>
 			</div>
 
@@ -19,7 +17,6 @@
 				<title-template>My images</title-template>
 				<images-list :images="imageStore.images"></images-list>
 			</div>
-
 		</div>
 	</div>
 </template>

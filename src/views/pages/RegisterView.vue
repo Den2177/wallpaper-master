@@ -19,6 +19,7 @@
 		</input-wrapper>
 
 		<main-button type="submit">Register</main-button>
+
 		<router-link class="link center mt20" :to="{name: 'login'}">Or login</router-link>
 	</form-template>
 </template>

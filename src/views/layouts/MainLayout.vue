@@ -1,13 +1,15 @@
 <template>
-	<header-block></header-block>
-	<main class="main">
-		<div class="container">
-			<div class="main-body">
-				<navbar-block></navbar-block>
-				<slot></slot>
+	<div class="main-container">
+		<header-block></header-block>
+		<main class="main">
+			<div class="container">
+				<div class="main-body">
+					<navbar-block></navbar-block>
+					<slot></slot>
+				</div>
 			</div>
-		</div>
-	</main>
+		</main>
+	</div>
 </template>
 
 <script setup>

@@ -16,8 +16,6 @@
 		<modal-window ref="popup">
 		</modal-window>
 	</div>
-
-
 </template>
 
 <script async setup>
