@@ -141,7 +141,6 @@ export const useImageStore = defineStore('image', () => {
     }
 
     async function setImages(requestFunc) {
-        loaderState.show();
 
         images.value = [];
         const response = await requestFunc();
@@ -153,7 +152,6 @@ export const useImageStore = defineStore('image', () => {
 
         images.value = response.data.data;
 
-        loaderState.hidden();
     }
 
     function addNewUniqueImages(newImages) {

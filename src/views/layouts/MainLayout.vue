@@ -16,6 +16,7 @@
 
 import HeaderBlock from "../components/blocks/HeaderBlock.vue";
 import NavbarBlock from "../components/blocks/NavbarBlock.vue";
+
 </script>
 
 <style scoped>

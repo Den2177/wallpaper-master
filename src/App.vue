@@ -27,10 +27,13 @@ const layout = computed(() => {
 				<template v-if="Component">
 					<Transition name="router" mode="out-in">
 						<Suspense timeout="0">
+
 							<component :key="$route.path" :is="Component"></component>
+
 							<template #fallback>
 								<load-spinner key="loader_b"></load-spinner>
 							</template>
+
 						</Suspense>
 					</Transition>
 				</template>
