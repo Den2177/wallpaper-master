@@ -25,11 +25,11 @@ const layout = computed(() => {
 		<component :is="layout">
 			<RouterView v-slot="{ Component }">
 				<template v-if="Component">
-					<Transition name="page" mode="out-in">
+					<Transition name="router" mode="out-in">
 						<Suspense timeout="0">
 							<component :key="$route.path" :is="Component"></component>
 							<template #fallback>
-								<load-spinner></load-spinner>
+								<load-spinner key="loader_b"></load-spinner>
 							</template>
 						</Suspense>
 					</Transition>
@@ -37,7 +37,7 @@ const layout = computed(() => {
 			</RouterView>
 		</component>
 
-		<load-spinner v-if="loaderState.isActive"></load-spinner>
+		<load-spinner v-if="loaderState.isActive" key="loader_a"></load-spinner>
 
 		<notification-block></notification-block>
 	</div>
@@ -47,15 +47,16 @@ const layout = computed(() => {
 .main-container.blocked {
 	pointer-events: none;
 }
-.page-enter-active,
-.page-leave-active {
+.route-enter-active,
+.route-leave-active {
 	transition: opacity 0.3s ease;
 }
 
-.page-enter-from,
-.page-leave-to {
+.route-enter-from,
+.route-leave-to {
 	opacity: 0;
 }
+
 .link {
 	transition: color .2s ease;
 }

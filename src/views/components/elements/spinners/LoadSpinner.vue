@@ -1,8 +1,8 @@
 <template>
-<div class="spinner-bc">
-	<div class="spinner">
+	<div class="spinner-bc">
+		<div class="spinner">
+		</div>
 	</div>
-</div>
 </template>
 
 <script setup>
@@ -24,6 +24,7 @@
 	z-index: 3000;
 	background-color: rgba(13, 12, 15, 0.5);
 }
+
 .spinner {
 	height: 50px;
 	width: 50px;

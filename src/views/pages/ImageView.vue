@@ -58,7 +58,6 @@
 						<img :src="api.host + image.url" alt="image1">
 					</div>
 				</div>
-
 			</div>
 		</div>
 	</div>

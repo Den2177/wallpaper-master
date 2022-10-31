@@ -29,12 +29,17 @@ export const useImageStore = defineStore('image', () => {
     watch(searchValue, async () => {
         await setTopImages();
 
-        router.replace({ query: { name: searchValue.value } })
-
         if (route.name !== 'top') {
             await router.push(
                 {
                     name: 'top',
+                    query: { name: searchValue.value }
+                }
+            );
+        } else {
+            await router.replace(
+                {
+                    query: { name: searchValue.value }
                 }
             );
         }
@@ -50,8 +55,11 @@ export const useImageStore = defineStore('image', () => {
 
     async function setTopImages() {
         await setImages(requestImagesByName.bind(null, 0, searchValue.value));
-
-        router.replace({ query: { name: searchValue.value } })
+        await router.replace(
+            {
+                query: { name: searchValue.value }
+            }
+        );
     }
 
     function setTopImagesByTag(tagName) {

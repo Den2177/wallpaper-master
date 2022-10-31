@@ -2,14 +2,12 @@
 	<div class="images-list">
 		<title-template>Top images by likes</title-template>
 		<images-list :images="store.images"></images-list>
-		<load-spinner v-if="loaderState.isActive"></load-spinner>
 	</div>
 </template>
 
 <script async setup>
 import ImagesList from "../components/blocks/ImagesList.vue";
 import {useImageStore} from "../../state/image.js";
-import LoadSpinner from "../components/elements/spinners/LoadSpinner.vue";
 import {useLoaderStore} from "../../state/loader";
 import {useInfiniteScroll} from "../../composables/infinite-scroll.js";
 import TitleTemplate from "../components/templates/TitleTemplate.vue";

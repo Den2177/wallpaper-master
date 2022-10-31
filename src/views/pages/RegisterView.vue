@@ -1,7 +1,6 @@
 <template>
 	<form-template @submit="submit">
 		<h3 class="mb20">Register</h3>
-
 		<input-wrapper hint="Name">
 			<main-input type="name" v-model="userFields.name"></main-input>
 		</input-wrapper>

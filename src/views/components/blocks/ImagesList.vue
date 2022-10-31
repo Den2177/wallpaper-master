@@ -1,12 +1,14 @@
 <template>
-	<div class="images-list" v-if="images.length">
-		<TransitionGroup name="list">
-			<div class="image-item" v-for="image in images" :key="image.id" @click="$router.push(`/images/${image.id}`)">
-				<img :src="api.host + image.url" alt="image">
-			</div>
-		</TransitionGroup>
+	<div>
+		<div class="images-list" v-if="images.length">
+			<TransitionGroup name="list">
+				<div class="image-item" v-for="image in images" :key="image.id" @click="$router.push(`/images/${image.id}`)">
+					<img :src="api.host + image.url" alt="image">
+				</div>
+			</TransitionGroup>
+		</div>
+		<empty-message v-else props="images"></empty-message>
 	</div>
-	<empty-message v-else props="images"></empty-message>
 </template>
 
 <script setup>
