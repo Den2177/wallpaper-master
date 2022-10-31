@@ -29,8 +29,6 @@ export const useImageStore = defineStore('image', () => {
     const searchValue = ref('');
 
     watch(searchValue, async () => {
-        await setTopImages();
-
         if (route.name !== 'top') {
             await router.push(
                 {
@@ -45,6 +43,8 @@ export const useImageStore = defineStore('image', () => {
                 }
             );
         }
+
+        await setTopImages();
     });
 
     async function setMyImages() {
@@ -79,6 +79,7 @@ export const useImageStore = defineStore('image', () => {
 
     async function setOneImage(imageId) {
         const response = await requestOneImage(imageId);
+
         Object.assign(image, response.data.data);
     }
 
