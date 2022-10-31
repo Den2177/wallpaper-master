@@ -9,7 +9,7 @@
 			<div class="container">
 				<div class="two-one">
 					<div class="left-section">
-						<div class="section-block">
+						<div class="section-block mb20">
 							<h3>Author</h3>
 							<user-info
 									v-if="image.author"
@@ -17,45 +17,7 @@
 									@click="showAuthorPage"
 							></user-info>
 						</div>
-						<div class="section-block">
-							<h3>Image property</h3>
-							<div class="image-info">
-								<div class="custom-table card">
-									<div class="row">
-										<h4 class="key grey">
-											Width
-										</h4>
-										<div class="value">
-											{{ image.width }}px
-										</div>
-									</div>
-									<div class="row">
-										<h4 class="key grey">
-											Height
-										</h4>
-										<div class="value">
-											{{ image.height }}px
-										</div>
-									</div>
-									<div class="row">
-										<h4 class="key grey">
-											Mimes
-										</h4>
-										<div class="value">
-											{{ image.mime }}
-										</div>
-									</div>
-									<div class="row">
-										<h4 class="key grey">
-											Image Size
-										</h4>
-										<div class="value">
-											{{ convertBytesToKbytes(image.filesize) }} KBytes
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
+						<image-table :image="image" v-if="image"></image-table>
 						<div class="section-block" v-if="image.tags?.length">
 							<h3>Tags</h3>
 							<div class="tag-list">
@@ -113,6 +75,7 @@ import HeaderBlock from "../components/blocks/HeaderBlock.vue";
 import api from '/src/api/config/api.js';
 import {computed} from "vue";
 import {useNotification} from "../../composables/notification";
+import ImageTable from "../components/blocks/ImageTable.vue";
 
 const {showNotification} = useNotification();
 const router = useRouter();
@@ -143,10 +106,6 @@ async function loadPage() {
 
 function downloadImage(image) {
 	imageStore.downloadImage(image);
-}
-
-function convertBytesToKbytes(value) {
-	return Math.round(value / 1000);
 }
 
 function toggleLike(image) {
@@ -211,24 +170,6 @@ async function searchWithTag(tag) {
 	gap: 20px;
 }
 
-.custom-table {
-	display: flex;
-	padding: 20px;
-	flex-direction: column;
-}
-
-.row {
-	padding: 10px 0px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
-
-.left-section {
-	display: flex;
-	flex-direction: column;
-	gap: 40px;
-}
 
 .section-block > h3 {
 	margin-bottom: 10px;

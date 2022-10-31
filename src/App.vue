@@ -72,7 +72,9 @@ const layout = computed(() => {
 .pt10 {
 	padding-top: 10px;
 }
-
+.mb20 {
+	margin-bottom: 20px;
+}
 body {
 	color: #fff;
 	background-color: #0d0c0f;
