@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {reactive, ref, watch} from "vue";
+import {nextTick, reactive, ref, watch} from "vue";
 import {
     requestDeleteImage,
     requestDownloadImage,
@@ -29,20 +29,6 @@ export const useImageStore = defineStore('image', () => {
     const searchValue = ref('');
 
     watch(searchValue, async () => {
-        if (route.name !== 'top') {
-            await router.push(
-                {
-                    name: 'top',
-                    query: {name: searchValue.value}
-                }
-            );
-        } else {
-            await router.replace(
-                {
-                    query: {name: searchValue.value}
-                }
-            );
-        }
 
         await setTopImages();
     });
@@ -58,8 +44,9 @@ export const useImageStore = defineStore('image', () => {
     async function setTopImages() {
         await setImages(requestImagesByName.bind(null, 0, searchValue.value));
 
-        await router.replace(
+        await router.push(
             {
+                name: 'top',
                 query: {name: searchValue.value}
             }
         );
