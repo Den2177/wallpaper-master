@@ -5,38 +5,10 @@
 				<div class="left-content flex-row">
 					<user-info :is-big-avatar="true" :user="userStore.user" class="mb20"></user-info>
 				</div>
-
-				<div class="statistics" v-if="userStore.user.statistic">
-					<div class="statistic-block">
-						<div class="number">
-							{{ userStore.user.statistic.uploads }}
-						</div>
-						<div class="statistic-type">
-							Uploaded images
-						</div>
-					</div>
-					<div class="statistic-block">
-						<div class="number">
-							{{ userStore.user.statistic.likes }}
-						</div>
-						<div class="statistic-type">
-							Likes on images
-						</div>
-					</div>
-					<div class="statistic-block">
-						<div class="number">
-							{{ userStore.user.statistic.downloads }}
-						</div>
-						<div class="statistic-type">
-							Downloaded
-						</div>
-					</div>
-				</div>
+				<statistic-block :statistic="userStore.user.statistic"></statistic-block>
 			</div>
 			<div class="images-block mt20">
-				<div class="header-block">
-					<h2>{{ userStore.user.name }}'s images</h2>
-				</div>
+				<title-template>{{userStore.user.name}}'s images</title-template>
 				<images-list :images="imageStore.images"></images-list>
 			</div>
 		</div>
@@ -58,6 +30,8 @@ import {useUserStore} from "../../state/user";
 import {useImageStore} from "../../state/image";
 import {nextTick, ref} from "vue";
 import {useNotification} from "../../composables/notification";
+import TitleTemplate from "../components/templates/TitleTemplate.vue";
+import StatisticBlock from "../components/blocks/StatisticBlock.vue";
 const {showNotification} = useNotification();
 
 const router = useRouter();

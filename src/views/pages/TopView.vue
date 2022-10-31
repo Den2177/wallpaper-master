@@ -1,8 +1,6 @@
 <template>
 	<div class="images-list">
-		<div class="header-block">
-			<h2>The most popular images by likes</h2>
-		</div>
+		<title-template>Top images by likes</title-template>
 		<images-list :images="store.images"></images-list>
 		<load-spinner v-if="loaderState.isActive"></load-spinner>
 	</div>
@@ -14,6 +12,7 @@ import {useImageStore} from "../../state/image.js";
 import LoadSpinner from "../components/elements/spinners/LoadSpinner.vue";
 import {useLoaderStore} from "../../state/loader";
 import {useInfiniteScroll} from "../../composables/infinite-scroll.js";
+import TitleTemplate from "../components/templates/TitleTemplate.vue";
 
 const loaderState = useLoaderStore();
 const store = useImageStore();

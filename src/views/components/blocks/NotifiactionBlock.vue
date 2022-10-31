@@ -4,7 +4,7 @@
 		<div class="notification" :class="{'error': notification.isError}" v-for="notification in notifications" :key="notification.id">
 			<div class="icon">
 				<error-icon v-if="notification.isError"></error-icon>
-				<succFoess-icon v-else></succFoess-icon>
+				<success-icon v-else></success-icon>
 			</div>
 			<div class="content">
 				<h4>{{notification.title}}</h4>
