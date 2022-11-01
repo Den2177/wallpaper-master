@@ -6,8 +6,8 @@ const instance = axios.create({
     baseURL: api.url,
 });
 
-instance.updateToken = () => {
-    instance.defaults.headers.common['Authorization'] = "Bearer " + getTokenFromStorage();
+instance.updateToken = function() {
+    this.defaults.headers.common['Authorization'] = "Bearer " + getTokenFromStorage();
 }
 
 instance.updateToken();

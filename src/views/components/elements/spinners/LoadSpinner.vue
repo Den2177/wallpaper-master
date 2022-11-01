@@ -27,7 +27,6 @@
 .spinner {
 	height: 50px;
 	width: 50px;
-	border: 6px solid #f2f2fe;
 	border-top: 6px solid #6349d9;
 	border-radius: 50%;
 	animation: spin 1s ease infinite;

@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {nextTick, reactive, ref, watch} from "vue";
+import {reactive, ref, watch} from "vue";
 import {
     requestDeleteImage,
     requestDownloadImage,
