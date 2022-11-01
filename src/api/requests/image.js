@@ -7,6 +7,7 @@ const throttledRequestImagesByName = throttle((imageName, offset = 0) => {
         name: imageName,
         offset,
     }));
+
 }, api.throttleMs);
 
 const getDebouncedRecommendedImages = debounce((offset = 0) => {
@@ -23,11 +24,11 @@ const getDebouncedMyImages = debounce((offset = 0) => {
 
 const getDebouncedLikedImages = debounce((offset = 0) => {
     return axios.get(mountParametersToQueryString('/liked', {
-        offset: offset,
+        offset,
     }));
 }, api.throttleMs);
 
-export function requestImagesByName(offset = 0, imageName)  {
+export function requestImagesByName(offset = 0, imageName = '')  {
     return throttledRequestImagesByName(imageName, offset);
 }
 

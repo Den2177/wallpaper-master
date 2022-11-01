@@ -58,6 +58,7 @@ const router = createRouter({
             component: load('TopView'),
             meta: {
                 layout: MainLayout,
+                isRequested: false,
             }
         },
         {

@@ -20,7 +20,6 @@
 	left: 0;
 	width: 100%;
 	height: 100%;
-	pointer-events: none;
 	z-index: 3000;
 	background-color: rgba(13, 12, 15, 0.5);
 }

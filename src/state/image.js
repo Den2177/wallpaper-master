@@ -29,7 +29,7 @@ export const useImageStore = defineStore('image', () => {
     const searchValue = ref('');
 
     watch(searchValue, async () => {
-
+        if (route.name !== 'top') await router.push('/top');
         await setTopImages();
     });
 
@@ -43,13 +43,6 @@ export const useImageStore = defineStore('image', () => {
 
     async function setTopImages() {
         await setImages(requestImagesByName.bind(null, 0, searchValue.value));
-
-        await router.push(
-            {
-                name: 'top',
-                query: {name: searchValue.value}
-            }
-        );
     }
 
     function setTopImagesByTag(tagName) {
