@@ -26,12 +26,21 @@ export const useImageStore = defineStore('image', () => {
 
     const images = ref([]);
     const image = reactive({});
-    const searchValue = ref('');
+    const searchValue = ref(route.query.name || '');
 
     watch(searchValue, async () => {
         if (searchValue.value.length > 100) return;
 
-        if (route.name !== 'top') await router.push('/top');
+        if (route.name !== 'top') {
+            await router.push({
+                name: 'top',
+            });
+        }
+
+        route.query = {
+            name: searchValue.value,
+        };
+
         await setTopImages();
     });
 
