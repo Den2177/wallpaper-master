@@ -29,6 +29,8 @@ export const useImageStore = defineStore('image', () => {
     const searchValue = ref('');
 
     watch(searchValue, async () => {
+        if (searchValue.value.length > 100) return;
+
         if (route.name !== 'top') await router.push('/top');
         await setTopImages();
     });
