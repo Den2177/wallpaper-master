@@ -58,7 +58,6 @@ const router = createRouter({
             component: load('TopView'),
             meta: {
                 layout: MainLayout,
-                isRequested: false,
             }
         },
         {
@@ -86,9 +85,7 @@ const router = createRouter({
     scrollBehavior(to, from, savedPosition) {
 
         return new Promise((resolve, reject) => {
-
             setTimeout(() => {
-
                 if (savedPosition) {
                     resolve({
                         top: savedPosition.top,
@@ -101,8 +98,7 @@ const router = createRouter({
                         left: 0,
                     })
                 }
-            }, 1100);
-
+            }, 680);
         });
     },
 });

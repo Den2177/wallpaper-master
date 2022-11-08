@@ -20,12 +20,7 @@
 						<image-table :image="image" v-if="image"></image-table>
 						<div class="section-block" v-if="image.tags?.length">
 							<h3>Tags</h3>
-							<div class="tag-list">
-								<div class="tag" style="background: #6349d9;" v-for="tag in image.tags" :key="tag.id"
-										 @click="searchWithTag(tag)">
-									{{ tag.name }}
-								</div>
-							</div>
+							<tag-list :tags="image.tags"></tag-list>
 						</div>
 
 						<div class="section-block">
@@ -75,6 +70,7 @@ import api from '/src/api/config/api.js';
 import {computed} from "vue";
 import {useNotification} from "../../composables/notification";
 import ImageTable from "../components/blocks/ImageTable.vue";
+import TagList from "../components/blocks/TagList.vue";
 
 const {showNotification} = useNotification();
 const router = useRouter();
@@ -121,18 +117,6 @@ async function deleteImage() {
 	router.back();
 }
 
-async function searchWithTag(tag) {
-	const imagesStore = useImageStore();
-
-	await imagesStore.setTopImagesByTag(tag.name);
-
-	await router.push(
-			{
-				name: 'top',
-			}
-	);
-}
-
 </script>
 
 <style scoped>
@@ -172,22 +156,6 @@ async function searchWithTag(tag) {
 
 .section-block > h3 {
 	margin-bottom: 10px;
-}
-
-.tag-list {
-	display: flex;
-	align-items: center;
-	flex-wrap: wrap;
-	gap: 10px;
-	justify-content: center;
-}
-
-.tag {
-	background-color: #6f4fff;
-	color: #fff;
-	border-radius: 4px;
-	cursor: pointer;
-	padding: 5px 10px;
 }
 
 @media (max-width: 1050px) {

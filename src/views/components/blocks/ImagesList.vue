@@ -2,9 +2,7 @@
 	<div>
 		<div class="images-list" v-if="images.length">
 			<TransitionGroup name="list">
-				<div class="image-item" v-for="image in images" :key="image.id" @click="$router.push(`/images/${image.id}`)">
-					<img :src="api.host + image.url" alt="image">
-				</div>
+				<image-item v-for="image in images" :image="image" @click="$router.push(`/images/${image.id}`)" :key="image.id"></image-item>
 			</TransitionGroup>
 		</div>
 		<empty-message v-else props="images"></empty-message>
@@ -13,7 +11,7 @@
 
 <script setup>
 import EmptyMessage from "../templates/EmptyMessage.vue";
-import api from '/src/api/config/api.js';
+import ImageItem from "./ImageItem.vue";
 
 const props = defineProps({
 	images: {
@@ -22,11 +20,13 @@ const props = defineProps({
 	}
 });
 
+const emit = defineEmits({});
+
 </script>
 
 <style scoped>
 
-.list-move, /* apply transition to moving elements */
+.list-move,
 .list-enter-active,
 .list-leave-active {
 	transition: opacity .1s ease;
@@ -37,28 +37,10 @@ const props = defineProps({
 	opacity: 0;
 }
 
-/* ensure leaving items are taken out of layout flow so that moving
-   animations can be calculated correctly. */
-
 .images-list {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	gap: 10px;
-}
-
-.image-item {
-	width: 100%;
-	transition: transform .2s linear;
-	cursor: pointer;
-	height: 220px;
-}
-
-.image-item:hover {
-	transform: scale(1.02);
-}
-
-.image-item img {
-	border-radius: 20px;
 }
 
 @media (max-width: 950px) {

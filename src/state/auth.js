@@ -6,7 +6,6 @@ import axios from "../api/config/axios-config.js";
 import {saveStatisticToStorage} from "../storage/statistic.js";
 
 export const useAuthStore = defineStore('auth',  () => {
-    console.log('store installed');
     let user = reactive({});
     let isAuthed = computed(() => !!user.email);
     let userInfo = computed(() => {

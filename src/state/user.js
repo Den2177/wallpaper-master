@@ -1,6 +1,6 @@
 import {defineStore} from "pinia/dist/pinia";
 import {ref} from "vue";
-import {requestUserInfo, requestUserImages} from "../api/requests/user";
+import {requestUserInfo} from "../api/requests/user";
 
 export const useUserStore = defineStore('user', () => {
     let user = ref({});
@@ -13,6 +13,7 @@ export const useUserStore = defineStore('user', () => {
 
     return {
         user,
+
         setUserInfo,
     }
 });

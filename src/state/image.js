@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {reactive, ref, watch} from "vue";
+import {nextTick, reactive, ref, watch} from "vue";
 import {
     requestDeleteImage,
     requestDownloadImage,
@@ -16,6 +16,7 @@ import {useProfileStore} from "./profile.js";
 import {useLoaderStore} from "./loader";
 import {requestUserImages} from "../api/requests/user";
 import {useRoute, useRouter} from "vue-router";
+import {watchThrottled} from "@vueuse/core";
 
 export const useImageStore = defineStore('image', () => {
     const profileStore = useProfileStore();
@@ -28,20 +29,28 @@ export const useImageStore = defineStore('image', () => {
     const image = reactive({});
     const searchValue = ref(route.query.name || '');
 
-    watch(searchValue, async () => {
-        if (searchValue.value.length > 100) return;
+    watchThrottled(searchValue, async () => {
 
         if (route.name !== 'top') {
             await router.push({
                 name: 'top',
+                query: {
+                    name: searchValue.value,
+                },
             });
+
+            return null;
         }
 
-        route.query = {
-            name: searchValue.value,
-        };
+        await router.replace({
+            query: {
+                name: searchValue.value,
+            }
+        });
 
         await setTopImages();
+    }, {
+        throttle: 900,
     });
 
     async function setMyImages() {
@@ -116,6 +125,7 @@ export const useImageStore = defineStore('image', () => {
 
     async function toggleLike(image) {
         const response = await requestToggleLike(image.id);
+
         const likeInfo = response.data;
         image.isLiked = likeInfo.isLiked;
         image.likes = likeInfo.likes;
